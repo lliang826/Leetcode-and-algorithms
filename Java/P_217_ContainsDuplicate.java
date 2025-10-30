@@ -1,5 +1,31 @@
 import java.util.*;
 
+/*
+ * Brute force solution: iterating through the array, and at each integer in the array, make a second iteration
+ * to check if subsequent integers are duplicates.
+ * Time complexity: O(n^2), very inefficient because of nested for loops
+ * Space complexity: O(1), no additional data structures
+ * 
+ * Set solution (implemented below): this is the most efficient solution because it only requires a single pass
+ * through the array. First, create an empty set. At each integer, check if the integer already exists in the set.
+ * If it does, it's a duplicate and we can return true. If it doesn't exist, add the integer to the set so it can 
+ * be checked by the reset of the integers in the array. If we go through the entire array and there are no 
+ * duplicates, return false.
+ * Instead of using a set, we could also use a map, where the [key: value] pair is [an integer: the # of times the
+ * integer appears in the array]. This results in the exact same time and space complexity as the set, but we would
+ * also have to add a value in each iteration, which is unnecessary.
+ * Time complexity: O(n), where n is the number of integers in the array
+ * Space complexity: O(n), we could potentially store all the integers into the set in the worst case scenario
+ * 
+ * Sorting solution: if we wanted the most efficient solution with no additional space, this would be the choice.
+ * This requires a first pass through the array to sort all the integers in either ascending or descending order.
+ * Then, in the second pass (not nested), we would check for identical integers next to each other.
+ * Time complexity: O(n log n), since we are constrained by the sorting algorithm efficiency
+ * Space complexity: O(1), no additional data structure if we sort the array in-place without creating a copy
+ *  - Sorting algorithm CAN'T be Merge Sort since that creates temporary arrays
+ *  - To achieve in-place sorting with n log n time, it has to be Heap Sort
+ */
+
 public class P_217_ContainsDuplicate {
     public static boolean containsDuplicate(int[] nums) {
         Set<Integer> set = new HashSet<>();
