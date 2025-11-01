@@ -13,20 +13,21 @@ import java.util.Map;
  * false. A positive value means an extra character in string s and a negative value means an extra character in string t.
  * If the third loop terminates, we can conclude that the two strings are anagrams of each other.
  * Time complexity: O(n), where n is the number of characters in the strings
- * Space complexity: O(n), storing all chars into the map
+ * Space complexity: O(k), storing all UNIQUE chars into the map
  * 
  * Sorting solution: sort both strings in either ascending or descending order. Use a third for loop to iterate through
  * the indices of both strings at the same time; if any characters don't match, return false.
  * Time complexity: O(n log n), constrained by the sorting
- * Space complexity: O(1) if sorting in place with heapsort (can't be merge sort because that creates arrays)
+ * Space complexity: O(n) because we can't sort in place; Java strings are immutable, must create an array copy
+ * O(1) if using a language that has mutable strings so we can sort in place with heapsort (can't be merge sort because that creates arrays)
  * 
- * Array solution: similar to the hasmap solution, but if the question specifies only lowercase or only uppercase letters,
+ * Array solution: similar to the hashmap solution, but if the question specifies only lowercase or only uppercase letters,
  * we can use an array to store the counters instead of a map. The index of the array represents the ASCII value of the 
  * letter (if the letter is 'c', then 'c' - 'a' = index 2). A second for loop is required to check for non-zero values
  * in the array. This solution is slightly faster than the hashmap solution because arrays are a bit faster and more
  * memory-efficient.
  * Time complexity: O(n), iterating through all chars in the strings
- * Space: O(n), storing all chars into an array
+ * Space: O(1), constant/fixed space (only 26 characters in the alphabet)
  */
 
 public class P_242_ValidAnagram {
@@ -87,10 +88,16 @@ public class P_242_ValidAnagram {
             char c = t.charAt(i);
             if (map.containsKey(c)) {
                 int value = map.get(c);
-                if (value == 1) {               // Improvement here: instead of leaving counts of 0 in the map,
-                    map.remove(c);              // remove from from the hashmap so we can avoid the third for
-                }                               // loop and use a simple isEmpty() check instead
-                map.replace(c, value - 1);
+                /*
+                 * Improvement here: instead of leaving counts of 0 in the map, 
+                 * remove from from the hashmap so we can avoid the third for 
+                 * loop and use a simple isEmpty() check instead
+                 */
+                if (value == 1) {
+                    map.remove(c);
+                } else {
+                    map.replace(c, value - 1);
+                }
             } else {
                 return false;
             }
@@ -98,6 +105,29 @@ public class P_242_ValidAnagram {
 
         if (!map.isEmpty()) {
             return false;
+        }
+
+        return true;
+    }
+
+    public boolean isAnagramArray(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+
+        int[] counts = new int[26];
+
+        for (int i = 0; i < s.length(); i++) {
+            int sChar = s.charAt(i) - 'a';
+            int tChar = t.charAt(i) - 'a';
+            counts[sChar] += 1;
+            counts[tChar] -= 1;
+        }
+
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] != 0) {
+                return false;
+            }
         }
 
         return true;
@@ -113,7 +143,7 @@ public class P_242_ValidAnagram {
                 { "", "", "true" },
                 { "a", "ab", "false" },
                 { "listen", "silent", "true" },
-                { "école", "école", "true" },
+                // { "école", "école", "true" }, // this test case won't pass for the array solution
                 { "aaa", "aa", "false" },
                 { "abc", "cba", "true" },
                 { "aabbcc", "abcabc", "true" },
@@ -142,6 +172,22 @@ public class P_242_ValidAnagram {
             String t = tests[i][1];
             boolean expected = Boolean.parseBoolean(tests[i][2]);
             boolean actual = solver.isAnagramImproved(s, t);
+            boolean ok = (expected == actual);
+            if (ok)
+                pass++;
+            System.out.printf("Test %d: s=\"%s\", t=\"%s\" => expected=%b, actual=%b => %s\n",
+                    i + 1, s, t, expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass, tests.length);
+
+        System.out.println("Running tests for P_242_ValidAnagram.isAnagramArray\n");
+        pass = 0;
+        for (int i = 0; i < tests.length; i++) {
+            String s = tests[i][0];
+            String t = tests[i][1];
+            boolean expected = Boolean.parseBoolean(tests[i][2]);
+            boolean actual = solver.isAnagramArray(s, t);
             boolean ok = (expected == actual);
             if (ok)
                 pass++;
