@@ -4,7 +4,7 @@ import java.util.*;
  * Practicing Leetcode in Java, same solution as in Python.
  * 
  * We could implement a brute force solution where we iterate through the integers in the nums array, and for each intger, we make a
- * second iteration to find the complement. 
+ * second iteration to find the difference. 
  * But this is inefficient: 2 for loops => O(n^2) time complexity
  * O(1) space complexity because no additional data structure used
  * 
@@ -18,9 +18,9 @@ public class P_1_TwoSum {
         Map<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < nums.length; i++) {
-            int complement = target - nums[i];
-            if (map.containsKey(complement)) {
-                return new int[] { i, map.get(complement) };
+            int diff = target - nums[i];
+            if (map.containsKey(diff)) {
+                return new int[] { map.get(diff), i };
             } else {
                 map.put(nums[i], i);
             }
@@ -29,40 +29,33 @@ public class P_1_TwoSum {
     }
 
     public static void main(String[] args) {
-        // Test Case 1: Example 1 from problem
-        System.out.println("Test 1: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { 2, 7, 11, 15 }, 9)));
-        // Expected: [0, 1]
-        
-        // Test Case 2: Example 2 from problem  
-        System.out.println("Test 2: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { 3, 2, 4 }, 6)));
-        // Expected: [1, 2]
-        
-        // Test Case 3: Example 3 from problem
-        System.out.println("Test 3: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { 3, 3 }, 6)));
-        // Expected: [0, 1]
-        
-        // Test Case 4: Negative numbers
-        System.out.println("Test 4: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { -1, -2, -3, -4, -5 }, -8)));
-        // Expected: [2, 4] (-3 + -5 = -8)
-        
-        // Test Case 5: Mix of positive and negative
-        System.out.println("Test 5: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { -3, 4, 3, 90 }, 0)));
-        // Expected: [0, 2] (-3 + 3 = 0)
-        
-        // Test Case 6: Large numbers  
-        System.out.println("Test 6: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { 1000000000, 5, -999999995 }, 5)));
-        // Expected: [0, 2] (1000000000 + (-999999995) = 5)
-        
-        // Test Case 7: Zero target
-        System.out.println("Test 7: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { 0, 4, 3, 0 }, 0)));
-        // Expected: [0, 3] (0 + 0 = 0)
-        
-        // Test Case 8: Adjacent elements
-        System.out.println("Test 8: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { 1, 2, 3, 4, 5 }, 9)));
-        // Expected: [3, 4] (4 + 5 = 9)
-        
-        // Test Case 9: First and last elements
-        System.out.println("Test 9: " + Arrays.toString(P_1_TwoSum.twoSum(new int[] { 5, 1, 2, 3, 4 }, 9)));
-        // Expected: [0, 4] (5 + 4 = 9)
+        // Test cases: {nums, target, expected}
+        Object[][] tests = new Object[][] {
+                { new int[] { 2, 7, 11, 15 }, 9, new int[] { 0, 1 } },
+                { new int[] { 3, 2, 4 }, 6, new int[] { 1, 2 } },
+                { new int[] { 3, 3 }, 6, new int[] { 0, 1 } },
+                { new int[] { -1, -2, -3, -4, -5 }, -8, new int[] { 2, 4 } },
+                { new int[] { -3, 4, 3, 90 }, 0, new int[] { 0, 2 } },
+                { new int[] { 1000000000, 5, -999999995 }, 5, new int[] { 0, 2 } },
+                { new int[] { 0, 4, 3, 0 }, 0, new int[] { 0, 3 } },
+                { new int[] { 1, 2, 3, 4, 5 }, 9, new int[] { 3, 4 } },
+                { new int[] { 5, 1, 2, 3, 4 }, 9, new int[] { 0, 4 } },
+        };
+
+        System.out.println("Running tests for P_1_TwoSum.twoSum\n");
+        int pass = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] nums = (int[]) tests[i][0];
+            int target = (int) tests[i][1];
+            int[] expected = (int[]) tests[i][2];
+            int[] actual = twoSum(nums, target);
+            boolean ok = Arrays.equals(expected, actual);
+            if (ok)
+                pass++;
+            System.out.printf("Test %d: nums=%s, target=%d => expected=%s, actual=%s => %s\n",
+                    i + 1, Arrays.toString(nums), target, Arrays.toString(expected), Arrays.toString(actual), (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass, tests.length);
     }
 }
