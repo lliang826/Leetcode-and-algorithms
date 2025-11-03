@@ -1,3 +1,20 @@
+/*
+ * Two pointers solution: Use two pointers starting from opposite ends of the string and move them
+ * toward each other. We preprocess the string by converting to lowercase and removing all non-
+ * alphanumeric characters to handle the "ignore case and non-alphanumeric" requirement.
+ * 
+ * The condition "left < right" (not "left != right") is crucial because:
+ * - For even-length strings: pointers will cross over (left becomes > right)
+ * - For odd-length strings: pointers will meet at the middle character
+ * - "left != right" would miss the crossover case and potentially cause infinite loops
+ * 
+ * Time complexity: O(n) - single pass through the string after O(n) preprocessing
+ * Space complexity: O(n) - due to creating a new preprocessed string with replaceAll()
+ * 
+ * Alternative approach for O(1) space: skip non-alphanumeric characters on-the-fly during comparison
+ * instead of preprocessing, but this solution prioritizes code clarity.
+ */
+
 public class P_125_ValidPalindrome {
     public boolean isPalindrome(String s) {
         s = s.toLowerCase().replaceAll("[^a-z0-9]", "");
