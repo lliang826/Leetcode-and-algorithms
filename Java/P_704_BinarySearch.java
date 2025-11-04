@@ -1,5 +1,13 @@
 /*
- * Time complexity: O(log n) because we are halving the array in each iteration
+ * Binary search implementation with overflow protection.
+ * 
+ * Key implementation details:
+ * - Uses (right - left) / 2 + left instead of (left + right) / 2 to prevent integer overflow
+ *   - The difference between the two pointers is the mid point; add this difference to the left 
+ *     pointer to reach it
+ * - The condition left <= right ensures we check all possible positions
+ * 
+ * Time complexity: O(log n) because we are halving the search space in each iteration
  * Space complexity: O(1) because we are using pointers, no additional data structures
  */
 
@@ -8,7 +16,7 @@ public class P_704_BinarySearch {
         int left = 0, right = nums.length - 1;
 
         while (left <= right) {
-            int mid = Math.floorDiv((left + right), 2);
+            int mid = (right - left) / 2 + left;
             if (target == nums[mid]) {
                 return mid;
             } else if (target < nums[mid]) {
