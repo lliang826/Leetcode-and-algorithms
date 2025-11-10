@@ -1,4 +1,26 @@
+/*
+ * Sliding window technique to find the smallest subarray with a sum that is equal to or greater than the target.
+ * 
+ * The sliding window technique uses two pointers (left and right) to find a subarray/interval within the array.
+ * When the right pointer increments, the size of the subarray increases. When the left pointer increments, the
+ * size of the subarray decreases. Sliding window algorithms can be used to solve problems involving contiguous
+ * subarrays/substrings:
+ * - longest/shortest subarray/substring with a condition
+ * - counting subarrays/substrings that meet a requirement
+ * 
+ * For this problem, we initialize a left and right pointer, a variable to hold the sum, and a variable to hold
+ * the length of the subarray. Both pointers start at the beginning of the array, but a for loop allows the right
+ * pointer to iterate through the entire array. 
+ * In each iteration, we add the integer to the right pointer to the sum and check if the sum is greater than or
+ * equal to the target. If it is, we can save this length and we can also start incrementing the left pointer.
+ * As the left pointer increments, the window/subarray shrinks, so we deduct the value at the left pointer from
+ * the sum. The left pointer continuously increments until the sum is no longer equal to or greater than the 
+ * target.
+ * Finally, we perform a check to return the length, or 0 if no subarray exists.
+ */
+
 public class P_209_MinimumSizeSubarraySum {
+    // Initial attempt
     public int minSubArrayLen(int target, int[] nums) {
         int left = 0;
         int sum = 0;
@@ -28,12 +50,13 @@ public class P_209_MinimumSizeSubarraySum {
         }
     }
 
+    // Better solution
     public int v2(int target, int[] nums) {
-        int left = 0;
+        int left = 0, right = 0;
         int sum = 0;
         int length = nums.length;
 
-        for (int right = 0; right < nums.length; right++) {
+        for (right = 0; right < nums.length; right++) {
             sum += nums[right];
 
             while (sum >= target) {
@@ -50,6 +73,7 @@ public class P_209_MinimumSizeSubarraySum {
         return sum >= target ? length : 0;
     }
 
+    // Solution from Leetcode
     public int v3(int target, int[] nums) {
         int left = 0;
         int sum = 0;
@@ -142,7 +166,7 @@ public class P_209_MinimumSizeSubarraySum {
         }
 
         System.out.printf("\nSummary: %d/%d tests passed.\n", passV3, tests.length);
-        
+
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("minSubArrayLen: %d/%d tests passed\n", pass, tests.length);
