@@ -1,3 +1,17 @@
+/*
+ * Sliding window algorithm. Instead of a dynamic window, the size of the window for this problem is fixed at length k.
+ * To keep the window length fixed, every time we increment the right pointer, we also increment the left pointer. The
+ * left pointer can be found at i - k, and the left pointer's value should be deducted/removed from the requirement's
+ * calculation.
+ * There is an initial for loop to calculate the current window's average. Then, the second for loop starts at the next
+ * index, and it continues to the end of the array. In each iteration, we shift both the left and right pointer by one.
+ * When we move the pointers, there is an overlap in the values between the pointers, which is why we don't need to 
+ * recalculate the sum in each iteration; we only need to add the rightmost value and deduct the leftmost value.
+ * 
+ * Time complexity: O(n), the right pointer must traverse the length of the array
+ * Space complexity: O(1), no additional data structure
+ */
+
 public class P_643_MaximumAverageSubarray1 {
     public double findMaxAverage(int[] nums, int k) {
         double sum = 0;
