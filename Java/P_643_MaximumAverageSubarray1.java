@@ -15,8 +15,8 @@
 public class P_643_MaximumAverageSubarray1 {
     public double findMaxAverage(int[] nums, int k) {
         double sum = 0;
-        for (int i = 0; i < k; i++) {
-            sum += nums[i];
+        for (int right = 0; right < k; right++) {
+            sum += nums[right];
         }
         
         double avg = sum / k;
@@ -33,8 +33,8 @@ public class P_643_MaximumAverageSubarray1 {
 
     public double v2(int[] nums, int k) {
         int sum = 0;
-        for (int i = 0; i < k; i++) {
-            sum += nums[i];
+        for (int right = 0; right < k; right++) {
+            sum += nums[right];
         }
         
         int maxSum = sum;
