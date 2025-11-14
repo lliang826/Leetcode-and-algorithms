@@ -1,3 +1,13 @@
+/*
+ * Sliding window algorithm. This is a dynamic window where the subarray must fulfill the condition of k zeroes.
+ * Every time the right pointer increments, we need to track the number of zeroes that have passed. If the 
+ * number of zeroes is greater than k, we need to shrink the window by incrementing the left pointer until the
+ * condition of k zeroes is met again.
+ * 
+ * Time complexity: O(n), the right pointer must traverse the length of the array
+ * Space complexity: O(1), constant space, no additional data structure
+ */
+
 public class P_1004_MaxConsecutiveOnes3 {
     public int longestOnes(int[] nums, int k) {
         int ones = 0;
@@ -26,6 +36,10 @@ public class P_1004_MaxConsecutiveOnes3 {
         return max;
     }
 
+    /*
+     * Better solution which doesn't need to track the number of ones. Since we are only counting 1s, we can 
+     * simply use the length of the window (right - left + 1) to find the number of ones.
+     */
     public int v2(int[] nums, int k) {
         int zeroes = 0;
         int left = 0;
