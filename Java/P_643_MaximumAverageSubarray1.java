@@ -3,7 +3,7 @@
  * To keep the window length fixed, every time we increment the right pointer, we also increment the left pointer. The
  * left pointer can be found at i - k, and the left pointer's value should be deducted/removed from the requirement's
  * calculation.
- * There is an initial for loop to calculate the current window's average. Then, the second for loop starts at the next
+ * There is an initial for loop to calculate the current window's sum. Then, the second for loop starts at the next
  * index, and it continues to the end of the array. In each iteration, we shift both the left and right pointer by one.
  * When we move the pointers, there is an overlap in the values between the pointers, which is why we don't need to 
  * recalculate the sum in each iteration; we only need to add the rightmost value and deduct the leftmost value.
@@ -31,6 +31,11 @@ public class P_643_MaximumAverageSubarray1 {
         return avg;
     }
 
+    /*
+     * Better solution which calculates the average at the end for better performance. We can do this because the ratio k
+     * is the same for all subarrays. Since we calculate the average at the end, we can store the sum as integers, which
+     * is also a speed/space improvement.
+     */
     public double v2(int[] nums, int k) {
         int sum = 0;
         for (int right = 0; right < k; right++) {
