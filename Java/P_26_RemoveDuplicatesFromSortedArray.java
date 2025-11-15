@@ -1,3 +1,15 @@
+/*
+ * Two pointers. Both left and right pointers start at index 1 because the integer at index 0 is already unique. As the right pointer
+ * traverses the length of the array, it checks if the current index's value is the same as the previous index's value. If it isn't,
+ * copy that value to the left pointer and increment the left pointer by one. Finally, we can return the left pointer because it 
+ * represents the number of unique values in the array (it increments every time a unique integer is found by the right pointer).
+ * 
+ * Essentially, the right pointer finds the unique integers and the left pointer builds the new array in-place.
+ * 
+ * Time complexity: O(n), the right pointer must traverse the length of the array and check all integers
+ * Space complexity: O(1), no additional data structures, only pointers
+ */
+
 public class P_26_RemoveDuplicatesFromSortedArray {
     public int removeDuplicates(int[] nums) {
         int left = 1;
