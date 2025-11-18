@@ -6,22 +6,17 @@ public class P_2090_kRadiusSubarrayAverages {
             prefixSum[i] = prefixSum[i - 1] + nums[i];
         }
         
-        long[] output = new long[nums.length];
+        int[] output = new int[nums.length];
         for (int i = 0; i < nums.length; i++) {
             if (i - k < 0 || i + k > nums.length - 1) {
                 output[i] = -1;
             } else {
                 long sum = prefixSum[i + k] - prefixSum[i - k] + nums[i - k];
-                output[i] = sum / (2 * k + 1);
+                output[i] = (int) (sum / (2 * k + 1));
             }
         }
         
-        int[] intOutput = new int[nums.length];
-        for (int i = 0; i < output.length; i++) {
-            intOutput[i] = (int) output[i];
-        }
-        
-        return intOutput;
+        return output;
     }
     // [7, 11, 14, 23, 24, 32, 37, 39, 45]
 
@@ -39,7 +34,7 @@ public class P_2090_kRadiusSubarrayAverages {
                 { new int[]{5, 5, 5, 5, 5}, 1, new int[]{-1, 5, 5, 5, -1} },
                 { new int[]{1, 1, 1, 1, 1, 1, 1}, 3, new int[]{-1, -1, -1, 1, -1, -1, -1} },
                 { new int[]{40527, 53696, 93730, 81345, 60298}, 1, new int[]{-1, 62651, 76257, 78457, -1} },
-                { new int[]{18, 16, 9, 5, 4, 15, 17, 8, 2, 20}, 2, new int[]{-1, -1, 10, 9, 10, 10, 11, -1, -1, -1} }
+                { new int[]{18, 16, 9, 5, 4, 15, 17, 8, 2, 20}, 2, new int[]{-1, -1, 10, 9, 10, 9, 9, 12, -1, -1} }
         };
 
         System.out.println("Running tests for P_2090_kRadiusSubarrayAverages.getAverages\n");
