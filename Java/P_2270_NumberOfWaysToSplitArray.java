@@ -1,4 +1,22 @@
 public class P_2270_NumberOfWaysToSplitArray {
+
+    /*
+     * Uses the prefix sum approach. We begin by pre-processing a prefix/cumulative sum array; this requires us to iterate through all elements
+     * in the input array O(n). It's important to make this an array of type long, in case we are adding large integers.
+     * Example input array: [2, 3, 1, 0]
+     * Example prefix sum array: [2, 5, 6, 6]
+     * Since we are comparing the sum of the subarrays, having the prefix sum array makes it very efficient to compare sums: to find the sum at
+     * an index, we simply have to access that same index in the prefix sum array, which is an O(1) operation.
+     * Once the prefix sum array is built, we simply have to iterate through the input array and compare the sum of the left subarray with the
+     * sum of the right subarray. We do not iterate on the last index because there is no right subarray there. The left subarray sum is simply 
+     * the value in the prefix sum array as mentioned earlier, whereas the right subarray sum is the total sum of the array minus the left 
+     * subarray sum. 
+     * If the left subarray sum fulfills the condition of being greater than or equal to the right subarray sum, we increment the counter. After
+     * all iterations, we return the counter.
+     * 
+     * Time complexity: O(n + (n - 1)) => O(n) 
+     * Space complexity: O(n) prefix sum array
+     */
     public int waysToSplitArray(int[] nums) {
         long[] prefix = new long[nums.length];
         prefix[0] = nums[0];
@@ -15,6 +33,12 @@ public class P_2270_NumberOfWaysToSplitArray {
         return count;
     }
 
+    /*
+     * This is an improvement of the first solution. It still requires some pre-processing (calculating the total sum of the input array), but
+     * we don't need to build an entire prefix sum array because in the second for loop when we are comparing the subarray sums, we can also
+     * track the sum of the left subarray.
+     * Same time complexity, but a huge improvement for space complexity: O(1) no prefix sum array
+     */
     public int v2(int[] nums) {
         long totalSum = 0;
         for (int num : nums) {
