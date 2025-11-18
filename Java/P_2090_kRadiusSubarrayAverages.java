@@ -1,4 +1,18 @@
 public class P_2090_kRadiusSubarrayAverages {
+
+    /*
+     * Prefix sum approach. We first create a prefix sum array for pre-processing (make sure to use an array of longs in case of large numbers).
+     * Then, in the second iteration of the input array, we check if the current index has a valid radius: it must have valid k values to the
+     * left and right of it. If it doesn't, we can automatically assign -1 for that index in the output array.
+     * If it has a valid radius, we can calculate its radius and store that in the output array.
+     * 
+     * Time: O(2n) => O(n), creating the prefix sum array and then calculating the averages are both O(n) operations
+     * Space: O(n), creating the prefix sum array
+     * 
+     * Example input: nums = [7,4,3,9,1,8,5,2,6], k = 3
+     * prefixSum = [7, 11, 14, 23, 24, 32, 37, 39, 45]
+     * Output = [-1,-1,-1,5,4,4,-1,-1,-1]
+     */
     public int[] getAverages(int[] nums, int k) {
         long[] prefixSum = new long[nums.length];
         prefixSum[0] = nums[0];
@@ -18,7 +32,6 @@ public class P_2090_kRadiusSubarrayAverages {
         
         return output;
     }
-    // [7, 11, 14, 23, 24, 32, 37, 39, 45]
 
     public static void main(String[] args) {
         P_2090_kRadiusSubarrayAverages solver = new P_2090_kRadiusSubarrayAverages();
