@@ -15,6 +15,23 @@ public class P_2270_NumberOfWaysToSplitArray {
         return count;
     }
 
+    public int v2(int[] nums) {
+        long totalSum = 0;
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        int count = 0;
+        long leftSum = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            leftSum += nums[i];
+            if (leftSum >= totalSum - leftSum) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         P_2270_NumberOfWaysToSplitArray solver = new P_2270_NumberOfWaysToSplitArray();
 
@@ -48,9 +65,28 @@ public class P_2270_NumberOfWaysToSplitArray {
         }
 
         System.out.printf("\nSummary: %d/%d tests passed.\n", pass, tests.length);
+        
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("Running tests for P_2270_NumberOfWaysToSplitArray.v2\n");
+        int passV2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int expected = (int) tests[i][1];
+            int actual = solver.v2(input.clone());
+            
+            boolean ok = (expected == actual);
+            if (ok)
+                passV2++;
+            System.out.printf("Test %d: input=%s => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), expected, actual, 
+                    (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.printf("\nSummary: %d/%d tests passed.\n", passV2, tests.length);
 
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("waysToSplitArray: %d/%d tests passed\n", pass, tests.length);
+        System.out.printf("v2: %d/%d tests passed\n", passV2, tests.length);
     }
 }
