@@ -2,6 +2,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class P_1832_CheckIfSentenceIsPangram {
+    /*
+     * Array approach. Use an array of size 26 to track occurrences of each letter. For each character in the sentence,
+     * increment the count at the corresponding index (c - 'a'). Then iterate through the array to check if any letter
+     * has a count of 0, which means it's missing from the sentence.
+     * 
+     * Time: O(n), iterating through all characters in the sentence
+     * Space: O(1), fixed array of size 26
+     */
     public boolean checkIfPangram(String sentence) {
         int[] arr = new int[26];
         for (int i = 0; i < sentence.length(); i++) {
@@ -16,6 +24,14 @@ public class P_1832_CheckIfSentenceIsPangram {
         }
         return true;
     }
+
+    /*
+     * HashSet approach. Add each unique character to a set. If the set size equals 26, then all letters of the 
+     * alphabet are present in the sentence.
+     * 
+     * Time: O(n), iterating through all characters in the sentence
+     * Space: O(1), the set can contain at most 26 characters
+     */
     public boolean v2(String sentence) {
         Set<Character> set = new HashSet<>();
         for (int i = 0; i < sentence.length(); i++) {
