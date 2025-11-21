@@ -16,6 +16,13 @@ public class P_1832_CheckIfSentenceIsPangram {
         }
         return true;
     }
+    public boolean v2(String sentence) {
+        Set<Character> set = new HashSet<>();
+        for (int i = 0; i < sentence.length(); i++) {
+            set.add(sentence.charAt(i));
+        }
+        return set.size() == 26;
+    }
 
     public static void main(String[] args) {
         P_1832_CheckIfSentenceIsPangram solver = new P_1832_CheckIfSentenceIsPangram();
@@ -55,9 +62,28 @@ public class P_1832_CheckIfSentenceIsPangram {
         }
 
         System.out.printf("\nSummary: %d/%d tests passed.\n", pass, tests.length);
+        
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("Running tests for P_1832_CheckIfSentenceIsPangram.v2\n");
+        int passV2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            String input = (String) tests[i][0];
+            boolean expected = (boolean) tests[i][1];
+            boolean actual = solver.v2(input);
+            
+            boolean ok = expected == actual;
+            if (ok)
+                passV2++;
+            System.out.printf("Test %d: input=\"%s\" => expected=%b, actual=%b => %s\n",
+                    i + 1, input, expected, actual, 
+                    (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.printf("\nSummary: %d/%d tests passed.\n", passV2, tests.length);
 
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("checkIfPangram: %d/%d tests passed\n", pass, tests.length);
+        System.out.printf("v2: %d/%d tests passed\n", passV2, tests.length);
     }
 }
