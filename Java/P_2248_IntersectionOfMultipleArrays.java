@@ -5,6 +5,17 @@ import java.util.List;
 import java.util.Map;
 
 public class P_2248_IntersectionOfMultipleArrays {
+    /*
+    Pretty straightforward hashmap approach. The tricky parts of this problem are iterating through the 2D array and 
+    remembering to sort the output list.
+    First, iterate through the inner arrays and store a count of all integers into a hashmap. Then, in a second for
+    loop, iterate through all the keys in the map and add the integers that appear in ALL inner arrays (count equals
+    the input array length) to an arraylist. Finally, sort the arraylist in ascending order and return it.
+    
+    Time: O(n * m + k log k), where n is the number of arrays, m is the average array length, and k is the number of 
+    unique integers. We iterate through all elements (n * m), then sort the result (k log k).
+    Space: O(k), where k is the number of unique integers. We store counts in a hashmap and results in an arraylist.
+    */
     public List<Integer> intersection(int[][] nums) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int[] arr : nums) {
