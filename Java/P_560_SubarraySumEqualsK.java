@@ -2,6 +2,63 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class P_560_SubarraySumEqualsK {
+    /*
+     * Prefix sum with hashmap approach. We can't use sliding window for this
+     * problem because the input array could contain negative numbers. Instead,
+     * we calculate the prefix sum first, then look for the complement prefix
+     * sum in the hashmap (kind of like two sum but with prefix sums).
+     * 
+     * A subarray's sum can be found with with the following formula:
+     * prefix[j] - prefix[i - 1]
+     * Prefix at last element of subarray - prefix before first element
+     * 
+     * array = [1, 2, 3, 4]
+     *             ----         Subarray from indices 1 to 2
+     * prefix = [1, 3, 6, 10]
+     * Sum of subarray from indices 1 to 2 is 6 - 1 = 5
+     * 
+     * Since the sum is k, we can rewrite the formula as:
+     * prefix[j] - prefix[i - 1] = k
+     * 
+     * Since we know prefix[j] (the prefix sum at the current index) and we also
+     * know k, we just have to look for the complement prefix[i - 1] in the
+     * hashmap. Formula rewritten as (moved variables around):
+     * prefix[i - 1] = prefix[j] - k
+     * 
+     * e.g.
+     * nums = [-1, 1, -1, 1]
+     * k = 0
+     * 
+     * prefixSum = [-1, 0, -1, 0]
+     * 
+     * # of valid subarrays => 4
+     * [-1, 1] indices 0 to 1
+     * [1, -1] indices 1 to 2
+     * [-1, 1] indices 2 to 3
+     * [-1, 1, -1, 1] indices 0 to 3 (entire array)
+     * 
+     * Before we start iterating through the input array, we have to put { 0, 1 }
+     * into the hashmap because an empty prefix has a sum of 0. Without this,
+     * sum - k = 0 wouldn't be a valid subarray and our answer would be incorrect.
+     * 
+     * Instead of creating a separate loop to pre-process the prefix sums, we can
+     * create the prefixes at the same time that we iterate through the input array.
+     * 
+     * In each iteration, we do 3 things:
+     * - Calculate the prefix sum
+     * - Calculate and find the prefix complement (sum - k) in the hashmap. If it 
+     *   exists, add the complement's count/frequency to the total (this is the 
+     *   answer that we return at the end)
+     * - Add the current prefix sum to the hashmap (or update its count)
+     * 
+     * The complement's count is the number of valid subarray starting indices.
+     * 
+     * As mentioned above, this problem is like a combination of the Two Sum problem,
+     * but with prefix sum complements instead.
+     * 
+     * Time: O(n), iterating through the entire array
+     * Space: O(n), creating a hash map with up to n distinct prefix sums
+     */
     public int subarraySum(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
         map.put(0, 1);
