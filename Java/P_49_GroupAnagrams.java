@@ -4,6 +4,27 @@ import java.util.List;
 import java.util.Map;
 
 public class P_49_GroupAnagrams {
+    /*
+    Hash map approach. To determine if strings are anagrams, we need to determine the frequencies of each character.
+    We can do this using the fixed array of size 26 to save memory, but the tricky part is figuring out how to group
+    the anagrams together. 
+    
+    We can achieve this by transforming that array of size 26 into a string; if two strings are anagrams of each other,
+    they have the same size 26 array. Strings are also immutable, so this is our hash map key. The hash map value is
+    simply an ArrayList containing the original strings.
+    
+    Another tricky part is when we transform the size 26 array to a string, we also need to need to add a delimiter.
+    Otherwise, double-digit frequencies can produce incorrect strings.
+    E.g. a: 10, b: 2 => 102 (does this mean 1 'a', 0 'b', 2 'c' or does it mean something else?)
+    
+    For each string in the input array, there are 3 steps:
+    1. Build the size 26 frequency array
+    2. Convert it to a string with delimiters (use StringBuilder and toString() for Java)
+    3. Add/update the <key, value> pair in the hash map as <transformedString, listOfOriginalStrings>
+    
+    Time: O(n * m), where n is the size of the input array and m is the number of characters in the longest string
+    Space: O(n), no anagrams so the hash map holds all strings as keys
+    */
     public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
 
@@ -31,6 +52,11 @@ public class P_49_GroupAnagrams {
         return new ArrayList<>(map.values());
     }
 
+    /*
+    Same as the solution above, but uses computeIfAbsent(). This is the most concise solution.
+
+    Same time/space complexities.
+    */
     public List<List<String>> v2(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
 
@@ -52,6 +78,12 @@ public class P_49_GroupAnagrams {
         return new ArrayList<>(map.values());
     }
 
+    /*
+    Same as the other two solutions above, but rewrites computeIfAbsent() in a way that's easier 
+    to understand. 
+    
+    Same time/space complexities.
+    */
     public List<List<String>> v3(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
 
