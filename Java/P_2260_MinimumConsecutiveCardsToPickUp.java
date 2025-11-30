@@ -2,6 +2,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class P_2260_MinimumConsecutiveCardsToPickUp {
+    /*
+    Hash map prefix approach.
+    
+    input = [3,4,2,3,4,3,7]
+    prefix= [0,1,2,3,4,5,6]
+    
+    As we iterate through the input integer array, the prefix is simply the current index. If the hash map contains the same value
+    at the current index (the matching cards), we can compute the length of the subarray with the formula prefix[j] - prefix[i] + 1.
+    Since we are looking for the minimum number of consecutive cards (the minimum subarray length), we store/update the map with the
+    current index no matter what.
+    
+    Time: O(n), where n is the number of integers in the input array
+    Space: O(n), storing all distinct integers in the hashmap
+    */
     public int minimumCardPickup(int[] cards) {
         Map<Integer, Integer> map = new HashMap<>();
 
