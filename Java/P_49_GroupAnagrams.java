@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class P_49_GroupAnagrams {
     }
 
     /*
-    Same as the solution above, but uses computeIfAbsent(). This is the most concise solution.
+    Same as the solution above, but uses computeIfAbsent(). This is the most concise and optimal solution.
 
     Same time/space complexities.
     */
@@ -105,6 +106,55 @@ public class P_49_GroupAnagrams {
                 map.put(key, list);
             }
             list.add(s);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+
+    /*
+    Another possible solution: using the character frequency map as the key for the parent map. But this is bad practice
+    since maps are mutable - if we updated one of the inner maps, it would break the hash function. 
+    It works in our solution (hash function doesn't break) because we don't update inner hash maps.
+    
+    Same time and space complexities, but this is slower than the frequency array approach because comparing maps entry
+    by entry is slow.
+    */
+    public List<List<String>> v4(String[] strs) {
+        Map<Map<Character, Integer>, List<String>> map = new HashMap<>();
+
+        for (String s : strs) {
+            Map<Character, Integer> freq = new HashMap<>();
+
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                int count = freq.getOrDefault(c, 0);
+                freq.put(c, count + 1);
+            }
+
+            map.computeIfAbsent(freq, k -> new ArrayList<>()).add(s);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+    
+    /*
+    Same solution as above, but we fix the mutable inner map issue by making it an unmodifiable map first.
+    
+    Same time and space complexities, but slower than the frequency array approach.
+    */
+    public List<List<String>> v5(String[] strs) {
+        Map<Map<Character, Integer>, List<String>> map = new HashMap<>();
+
+        for (String s : strs) {
+            Map<Character, Integer> freq = new HashMap<>();
+            
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                int count = freq.getOrDefault(c, 0);
+                freq.put(c, count + 1);
+            }
+
+            map.computeIfAbsent(Collections.unmodifiableMap(freq), k -> new ArrayList<>()).add(s);
         }
 
         return new ArrayList<>(map.values());
@@ -194,9 +244,53 @@ public class P_49_GroupAnagrams {
         System.out.printf("\nSummary: %d/%d tests passed.\n", pass3, tests.length);
 
         System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_49_GroupAnagrams.v4\n");
+        int pass4 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            String[] input = (String[]) tests[i][0];
+            int expectedGroups = (int) tests[i][1];
+            int[] expectedSizes = (int[]) tests[i][2];
+            List<List<String>> actual = solver.v4(input.clone());
+
+            int[] actualSizes = actual.stream().mapToInt(List::size).sorted().toArray();
+            boolean ok = expectedGroups == actual.size() && java.util.Arrays.equals(expectedSizes, actualSizes);
+            if (ok)
+                pass4++;
+            System.out.printf("Test %d: input=%s => expected groups=%d, actual groups=%d, expected sizes=%s, actual sizes=%s => %s\n",
+                    i + 1, java.util.Arrays.toString(input), expectedGroups, actual.size(),
+                    java.util.Arrays.toString(expectedSizes), java.util.Arrays.toString(actualSizes),
+                    (ok ? "PASS" : "FAIL"));
+        }
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass4, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_49_GroupAnagrams.v5\n");
+        int pass5 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            String[] input = (String[]) tests[i][0];
+            int expectedGroups = (int) tests[i][1];
+            int[] expectedSizes = (int[]) tests[i][2];
+            List<List<String>> actual = solver.v5(input.clone());
+
+            int[] actualSizes = actual.stream().mapToInt(List::size).sorted().toArray();
+            boolean ok = expectedGroups == actual.size() && java.util.Arrays.equals(expectedSizes, actualSizes);
+            if (ok)
+                pass5++;
+            System.out.printf("Test %d: input=%s => expected groups=%d, actual groups=%d, expected sizes=%s, actual sizes=%s => %s\n",
+                    i + 1, java.util.Arrays.toString(input), expectedGroups, actual.size(),
+                    java.util.Arrays.toString(expectedSizes), java.util.Arrays.toString(actualSizes),
+                    (ok ? "PASS" : "FAIL"));
+        }
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass5, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("groupAnagrams: %d/%d tests passed\n", pass1, tests.length);
         System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
         System.out.printf("v3: %d/%d tests passed\n", pass3, tests.length);
+        System.out.printf("v4: %d/%d tests passed\n", pass4, tests.length);
+        System.out.printf("v5: %d/%d tests passed\n", pass5, tests.length);
     }
 }

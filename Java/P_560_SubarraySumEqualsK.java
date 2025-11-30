@@ -13,7 +13,7 @@ public class P_560_SubarraySumEqualsK {
      * Prefix at last element of subarray - prefix before first element
      * 
      * array = [1, 2, 3, 4]
-     * ---- Subarray from indices 1 to 2
+     *             ---- Subarray from indices 1 to 2
      * prefix = [1, 3, 6, 10]
      * Sum of subarray from indices 1 to 2 is 6 - 1 = 5
      * 
