@@ -2,6 +2,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class P_2342_MaxSumOfAPairWithEqualSumOfDigits {
+    /*
+    Hash map approach. <key, value> pair is <digitSum, actualNumber>.
+    
+    As we iterate through the input array, we check if the current integer's digit sum exists in the 
+    map. If it does, we can add the two numbers together and store the maximum sum. Then, we update 
+    that digit sum's value in the map with the larger actual number in case we run into subsequent
+    integers with the same digit sum.
+    
+    e.g., [18,43,36,81]
+    pairs: [18,36] and [18,81] and [36,81]
+    output: 36 + 81 = 117
+    When we are iterating on index 2, <9, 36> will replace <9, 18> since 36 > 18.
+    
+    Time complexity: O(n), iterating through all integers in the input array
+    Space: O(n), if all integers have different digit sums, the map size will be equal to the array length
+    */
     public int maximumSum(int[] nums) {
         Map<Integer, Integer> map = new HashMap<>();
         int max = -1;
