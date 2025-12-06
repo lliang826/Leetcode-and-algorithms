@@ -41,6 +41,35 @@ public class P_2342_MaxSumOfAPairWithEqualSumOfDigits {
         return max;
     }
 
+    /*
+    Alternate solution which calculates the digit sum using modulo and division; this math
+    approach is slightly faster than the string approach.
+    
+    Time and space complexities are still the same.
+    */
+    public int v2(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = -1;
+
+        for (int num : nums) {
+            int digitSum = 0;
+            int temp = num;
+            while (temp > 0) {
+                digitSum += temp % 10;
+                temp /= 10;
+            }
+
+            if (map.containsKey(digitSum)) {
+                int actualNum = map.get(digitSum);
+                max = Math.max(max, actualNum + num);
+                map.put(digitSum, Math.max(actualNum, num));
+            } else {
+                map.put(digitSum, num);
+            }
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
         P_2342_MaxSumOfAPairWithEqualSumOfDigits solver = new P_2342_MaxSumOfAPairWithEqualSumOfDigits();
 
@@ -58,7 +87,7 @@ public class P_2342_MaxSumOfAPairWithEqualSumOfDigits {
         };
 
         System.out.println("Running tests for P_2342_MaxSumOfAPairWithEqualSumOfDigits.maximumSum\n");
-        int pass = 0;
+        int pass1 = 0;
         for (int i = 0; i < tests.length; i++) {
             int[] input = (int[]) tests[i][0];
             int expected = (int) tests[i][1];
@@ -66,11 +95,34 @@ public class P_2342_MaxSumOfAPairWithEqualSumOfDigits {
 
             boolean ok = expected == actual;
             if (ok)
-                pass++;
+                pass1++;
             System.out.printf("Test %d: input=%s => expected=%d, actual=%d => %s\n",
                     i + 1, java.util.Arrays.toString(input), expected, actual,
                     (ok ? "PASS" : "FAIL"));
         }
-        System.out.printf("\nSummary: %d/%d tests passed.\n", pass, tests.length);
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass1, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_2342_MaxSumOfAPairWithEqualSumOfDigits.v2\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int expected = (int) tests[i][1];
+            int actual = solver.v2(input.clone());
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass2++;
+            System.out.printf("Test %d: input=%s => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), expected, actual,
+                    (ok ? "PASS" : "FAIL"));
+        }
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass2, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
+        System.out.printf("Overall Summary:\n");
+        System.out.printf("maximumSum: %d/%d tests passed\n", pass1, tests.length);
+        System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
     }
 }
