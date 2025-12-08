@@ -2,6 +2,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class P_2352_EqualRowAndColumnPairs {
+    /*
+    Hash map approach. Bit of a tricky problem: 
+    - Iterating through a 2D to get the columns (invert the loops and the indices)
+    - Multiply the matching rows and columns to get the number of pairs
+    - Using a string for the hash map key, which means using StringBuilder to convert the
+    array to a string
+    
+    First, we iterate through grid[i] to get all the rows. Since we are looking for matching
+    rows and columns, each row/column must be the key in the hash map. However, arrays are
+    mutable, which means we must convert the array to a string before putting it into the 
+    hash map. We have to also use a delimiter to separate values in each row, or else 
+    [11, 1, 1] looks the same as [1, 11, 1]
+    Without delimiter: '1111'
+    With delimiter: '11#1#1#' and '1#11#1#'
+    
+    Then, we iterate through the input 2D array again to get the columns. We can do this by
+    inverting the loops and the indices. Again, we use a delimiter to separate values. The
+    columns must be put in a separate hash map or else we cannot calculate the number of
+    pairs.
+    
+    Finally, we calculate the number of pairs by finding the same rows and columns, and
+    multiplying their occurrences.
+    E.g., 3 rows and 2 columns with the same string array => 3 * 2 = 6 pairs
+    
+    Time: O(n^2 + n^2) => O(n^2), where n is the number of subarrays and the number of 
+    elements in each subarray (input is a n x n 2D array). We have to iterate through all 
+    elements in the input 2D array twice to get the rows and columns
+    
+    Space: O(n * n) => O(n^2), we store all rows/columns into 2 separate hash maps, so there
+    are n rows/columns composed of n integers (and delimiters) 
+    */
     public int equalPairs(int[][] grid) {
         Map<String, Integer> rows = new HashMap<>();
 
