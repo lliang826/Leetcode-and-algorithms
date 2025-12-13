@@ -98,6 +98,37 @@ public class P_3_LongestSubstringWithoutRepeatingCharacters {
 
         return length;
     }
+
+    /*
+    An optimized version of v3. This is the most time/space efficient solution for this problem because it uses
+    a frequency array. For frequency arrays of size 128 or 256, we don't need to do char c - 'a' because we can
+    use the character's Unicode as the index.
+    Each value in the array represents a valid index. Since 0 is a valid index, we need to prefill the array to
+    -1 to indicate that these are not valid indices.
+    
+    Time: still O(n), but accessing an array is faster because a hash map needs to calculate the hash code.
+    Space: O(1) constant because the array size is static/fixed
+    */
+    public int v4(String s) {
+        int left = 0;
+        int length = 0;
+
+        int[] arr = new int[128];
+        Arrays.fill(arr, -1);
+
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+
+            if (arr[c] >= left) {
+                left = arr[c] + 1;
+            }
+
+            arr[c] = right;
+            length = Math.max(length, right - left + 1);
+        }
+
+        return length;
+    }
     
     public static void main(String[] args) {
         P_3_LongestSubstringWithoutRepeatingCharacters solver = new P_3_LongestSubstringWithoutRepeatingCharacters();
@@ -167,9 +198,27 @@ public class P_3_LongestSubstringWithoutRepeatingCharacters {
         System.out.printf("\nSummary: %d/%d tests passed.\n", pass3, tests.length);
 
         System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_3_LongestSubstringWithoutRepeatingCharacters.v4\n");
+        int pass4 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            String input = (String) tests[i][0];
+            int expected = (int) tests[i][1];
+            int actual = solver.v4(input);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass4++;
+            System.out.printf("Test %d: input=\"%s\" => expected=%d, actual=%d => %s\n",
+                    i + 1, input, expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass4, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("lengthOfLongestSubstring: %d/%d tests passed\n", pass1, tests.length);
         System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
         System.out.printf("v3: %d/%d tests passed\n", pass3, tests.length);
+        System.out.printf("v4: %d/%d tests passed\n", pass4, tests.length);
     }
 }
