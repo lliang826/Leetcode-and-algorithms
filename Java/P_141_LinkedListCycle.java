@@ -11,6 +11,16 @@ public class P_141_LinkedListCycle {
         }
     }
 
+    /*
+    Floyd's tortoise and hare algorithm. 
+    By implementing a fast pointer (which increments by 2 nodes per iteration) and a slow pointer (which
+    increments by 1 node per iteration), we can detect if a linked list contains a cycle.
+    Analogy: a fast runner and a slow runner on a racetrack. If the fast runner overlaps the slow runner
+    there is a cycle/loop. 
+    
+    Time: O(n), where n is the number of nodes in the linked list
+    Space: O(1), constant because there is no additional data structure, we only use 2 pointers
+    */
     public boolean hasCycle(ListNode head) {
         ListNode slow = head;
         ListNode fast = head;
