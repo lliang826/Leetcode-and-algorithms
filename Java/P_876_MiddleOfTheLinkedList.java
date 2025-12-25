@@ -1,21 +1,6 @@
+import utils.ListNode;
+
 public class P_876_MiddleOfTheLinkedList {
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-    }
-
     public ListNode middleNode(ListNode head) {
         int length = 0;
         ListNode curr = head;
@@ -33,7 +18,7 @@ public class P_876_MiddleOfTheLinkedList {
 
         return head;
     }
-    
+
     public ListNode v2(ListNode head) {
         ListNode slow = head;
         ListNode fast = head;
@@ -45,8 +30,8 @@ public class P_876_MiddleOfTheLinkedList {
 
         return slow;
     }
-    
+
     public static void main(String[] args) {
-        
+
     }
 }
