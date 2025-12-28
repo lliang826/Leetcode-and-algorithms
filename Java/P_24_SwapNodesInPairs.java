@@ -91,6 +91,63 @@ public class P_24_SwapNodesInPairs {
     }
 
     public static void main(String[] args) {
-        
+        P_24_SwapNodesInPairs solver = new P_24_SwapNodesInPairs();
+
+        // Test cases: {input array, expected output array}
+        Object[][] tests = new Object[][] {
+                { new int[] { 1, 2, 3, 4 }, new int[] { 2, 1, 4, 3 } },
+                { new int[] { 1, 2, 3 }, new int[] { 2, 1, 3 } },
+                { new int[] { 1 }, new int[] { 1 } },
+                { new int[] {}, new int[] {} },
+                { new int[] { 1, 2 }, new int[] { 2, 1 } },
+                { new int[] { 1, 2, 3, 4, 5, 6 }, new int[] { 2, 1, 4, 3, 6, 5 } },
+                { new int[] { 1, 2, 3, 4, 5 }, new int[] { 2, 1, 4, 3, 5 } },
+                { new int[] { 10, 20, 30, 40, 50, 60, 70, 80 }, new int[] { 20, 10, 40, 30, 60, 50, 80, 70 } },
+                { new int[] { 5, 10 }, new int[] { 10, 5 } },
+                { new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, new int[] { 2, 1, 4, 3, 6, 5, 8, 7, 10, 9 } }
+        };
+
+        System.out.println("Running tests for P_24_SwapNodesInPairs.swapPairs\n");
+        int pass1 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int[] expected = (int[]) tests[i][1];
+            ListNode head = createList(input);
+            ListNode result = solver.swapPairs(head);
+            int[] actual = listToArray(result);
+
+            boolean ok = java.util.Arrays.equals(expected, actual);
+            if (ok)
+                pass1++;
+            System.out.printf("Test %d: input=%s => expected=%s, actual=%s => %s\n",
+                    i + 1, java.util.Arrays.toString(input), java.util.Arrays.toString(expected),
+                    java.util.Arrays.toString(actual), (ok ? "PASS" : "FAIL"));
+        }
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass1, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_24_SwapNodesInPairs.v2\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int[] expected = (int[]) tests[i][1];
+            ListNode head = createList(input);
+            ListNode result = solver.v2(head);
+            int[] actual = listToArray(result);
+
+            boolean ok = java.util.Arrays.equals(expected, actual);
+            if (ok)
+                pass2++;
+            System.out.printf("Test %d: input=%s => expected=%s, actual=%s => %s\n",
+                    i + 1, java.util.Arrays.toString(input), java.util.Arrays.toString(expected),
+                    java.util.Arrays.toString(actual), (ok ? "PASS" : "FAIL"));
+        }
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass2, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
+        System.out.printf("Overall Summary:\n");
+        System.out.printf("swapPairs: %d/%d tests passed\n", pass1, tests.length);
+        System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
     }
 }
