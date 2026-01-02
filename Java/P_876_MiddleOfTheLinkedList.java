@@ -46,25 +46,6 @@ public class P_876_MiddleOfTheLinkedList {
         return slow;
     }
 
-    // Helper method to create a linked list from an array
-    private static ListNode createList(int[] values) {
-        if (values == null || values.length == 0) {
-            return null;
-        }
-        ListNode head = new ListNode(values[0]);
-        ListNode curr = head;
-        for (int i = 1; i < values.length; i++) {
-            curr.next = new ListNode(values[i]);
-            curr = curr.next;
-        }
-        return head;
-    }
-
-    // Helper method to get the value of a node
-    private static int getNodeValue(ListNode node) {
-        return node != null ? node.val : -1;
-    }
-
     public static void main(String[] args) {
         P_876_MiddleOfTheLinkedList solver = new P_876_MiddleOfTheLinkedList();
 
@@ -87,9 +68,9 @@ public class P_876_MiddleOfTheLinkedList {
         for (int i = 0; i < tests.length; i++) {
             int[] input = (int[]) tests[i][0];
             int expected = (int) tests[i][1];
-            ListNode head = createList(input);
+            ListNode head = ListNode.createList(input);
             ListNode actual = solver.middleNode(head);
-            int actualValue = getNodeValue(actual);
+            int actualValue = ListNode.getNodeValue(actual);
 
             boolean ok = expected == actualValue;
             if (ok)
@@ -107,9 +88,9 @@ public class P_876_MiddleOfTheLinkedList {
         for (int i = 0; i < tests.length; i++) {
             int[] input = (int[]) tests[i][0];
             int expected = (int) tests[i][1];
-            ListNode head = createList(input);
+            ListNode head = ListNode.createList(input);
             ListNode actual = solver.v2(head);
-            int actualValue = getNodeValue(actual);
+            int actualValue = ListNode.getNodeValue(actual);
 
             boolean ok = expected == actualValue;
             if (ok)

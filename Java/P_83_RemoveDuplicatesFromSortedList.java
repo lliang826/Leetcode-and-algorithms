@@ -72,9 +72,9 @@ public class P_83_RemoveDuplicatesFromSortedList {
         for (int i = 0; i < tests.length; i++) {
             int[] input = (int[]) tests[i][0];
             int[] expected = (int[]) tests[i][1];
-            ListNode head = createList(input);
+            ListNode head = ListNode.createList(input);
             ListNode result = solver.deleteDuplicates(head);
-            int[] actual = listToArray(result);
+            int[] actual = ListNode.listToArray(result);
 
             boolean ok = java.util.Arrays.equals(expected, actual);
             if (ok)
@@ -92,9 +92,9 @@ public class P_83_RemoveDuplicatesFromSortedList {
         for (int i = 0; i < tests.length; i++) {
             int[] input = (int[]) tests[i][0];
             int[] expected = (int[]) tests[i][1];
-            ListNode head = createList(input);
+            ListNode head = ListNode.createList(input);
             ListNode result = solver.v2(head);
-            int[] actual = listToArray(result);
+            int[] actual = ListNode.listToArray(result);
 
             boolean ok = java.util.Arrays.equals(expected, actual);
             if (ok)
@@ -109,33 +109,5 @@ public class P_83_RemoveDuplicatesFromSortedList {
         System.out.printf("Overall Summary:\n");
         System.out.printf("deleteDuplicates: %d/%d tests passed\n", pass1, tests.length);
         System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
-    }
-
-    // Helper method to create a linked list from an array
-    private static ListNode createList(int[] values) {
-        if (values == null || values.length == 0) {
-            return null;
-        }
-        ListNode head = new ListNode(values[0]);
-        ListNode curr = head;
-        for (int i = 1; i < values.length; i++) {
-            curr.next = new ListNode(values[i]);
-            curr = curr.next;
-        }
-        return head;
-    }
-
-    // Helper method to convert a linked list to an array
-    private static int[] listToArray(ListNode head) {
-        if (head == null) {
-            return new int[0];
-        }
-        java.util.List<Integer> list = new java.util.ArrayList<>();
-        ListNode curr = head;
-        while (curr != null) {
-            list.add(curr.val);
-            curr = curr.next;
-        }
-        return list.stream().mapToInt(Integer::intValue).toArray();
     }
 }
