@@ -2,31 +2,26 @@ import utils.ListNode;
 
 public class P_19_RemoveNthNodeFromEndOfList {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode right = head;
-        ListNode left = head;
-        ListNode prev = head;
         int count = 0;
+        ListNode curr = head;
 
-        while (count < n) {
-            if (right == null) {
-                return head;
-            }
-            right = right.next;
+        while (curr != null) {
+            curr = curr.next;
             count++;
         }
 
-        while (right != null) {
-            right = right.next;
-            prev = left;
-            left = left.next;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+
+        int i = count - n;
+        while (i > 0) {
+            prev = prev.next;
+            i--;
         }
 
-        if (prev == left) {
-            return head.next;
-        }
-
-        prev.next = left.next;
-        return head;
+        prev.next = prev.next.next;
+        return dummy.next;
     }
 
     public static void main(String[] args) {
