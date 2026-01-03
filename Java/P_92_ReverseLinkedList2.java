@@ -1,6 +1,20 @@
 import utils.ListNode;
 
 public class P_92_ReverseLinkedList2 {
+    /*
+    This algorithm has 3 parts:
+    1. Finding the node before the start of the reversed nodes.
+      - The 'left' integer tells us where the reversal begins, so we can find the node just before that
+    2. Reversing the nodes specified by the 'left' and 'right' integers.
+      - Same as any other iterative linked list reversal algorithm, except that we stop reversing when
+      we've reached the end of the window (right - left + 1)
+    3. Reattaching the ends of the reversed nodes back into the original linked list.
+      - The node before left should be attached to the start of the reversed portion, and the end of
+      the reversed portion attaches to the rest of the list
+    
+    Time: O(n) if left and right are the ends of the list, we need to iterate through all nodes
+    Space: O(1), constant time, only pointers
+    */
     public ListNode reverseBetween(ListNode head, int left, int right) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -27,6 +41,11 @@ public class P_92_ReverseLinkedList2 {
         return dummy.next;
     }
 
+    /*
+    Cleaned up solution: renamed some of the variables for clarity.
+    
+    Same time and space complexities.
+    */
     public ListNode v2(ListNode head, int left, int right) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -38,18 +57,18 @@ public class P_92_ReverseLinkedList2 {
 
         ListNode curr = beforeLeft.next;
         ListNode prev = null;
-        int length = right - left + 1;
-        while (length > 0) {
+        int window = right - left + 1;
+        while (curr != null && window > 0) {
             ListNode next = curr.next;
             curr.next = prev;
             prev = curr;
             curr = next;
-            length--;
+            window--;
         }
 
-        ListNode end = beforeLeft.next;
+        ListNode reversedTail = beforeLeft.next;
         beforeLeft.next = prev;
-        end.next = curr;
+        reversedTail.next = curr;
 
         return dummy.next;
     }
