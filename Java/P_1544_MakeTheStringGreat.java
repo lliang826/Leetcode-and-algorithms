@@ -20,8 +20,19 @@ public class P_1544_MakeTheStringGreat {
 
         return sb.toString();
     }
-    
-    public static void main(String[] args) {
+
+    public String v2(String s) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (sb.length() > 0 && Math.abs(sb.charAt(sb.length() - 1) - c) == 32) {
+                sb.deleteCharAt(sb.length() - 1);
+            } else {
+                sb.append(c);
+            }
+        }
         
+        return sb.toString();
     }
 }
