@@ -1,4 +1,9 @@
+import java.util.Stack;
+
 public class P_1544_MakeTheStringGreat {
+    /*
+    
+    */
     public String makeGood(String s) {
         StringBuilder sb = new StringBuilder();
 
@@ -32,7 +37,25 @@ public class P_1544_MakeTheStringGreat {
                 sb.append(c);
             }
         }
-        
+
+        return sb.toString();
+    }
+    
+    public String v3(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!stack.isEmpty() && Math.abs(stack.peek() - c) == 32) {
+                stack.pop();
+            } else {
+                stack.push(c);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : stack) {
+            sb.append(c);
+        }
         return sb.toString();
     }
 }
