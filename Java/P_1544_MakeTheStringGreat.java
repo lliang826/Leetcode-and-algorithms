@@ -1,6 +1,15 @@
 import java.util.Stack;
 
 public class P_1544_MakeTheStringGreat {
+    /*
+    Using StringBuilder as a stack. As we iterate through the characters in the input string, if the current
+    char is the same as the last char, but in a different letter case, we pop both the current char amd the
+    last char. Otherwise, we add it to the stack.
+    The tricky part of this problem is figuring out if the characters are the same but in different letter cases.
+    
+    Time: O(n), where n is the number of characters in the input string
+    Space: O(n), worst case scenario all the chars are different so we push all of them to the stack
+    */
     public String makeGood(String s) {
         StringBuilder sb = new StringBuilder();
 
@@ -23,6 +32,13 @@ public class P_1544_MakeTheStringGreat {
         return sb.toString();
     }
 
+    /*
+    This is the cleanest version of the StringBuilder-as-stack approach. The check if the characters are the
+    same but in different letter cases can be messy, but this solution finds their unicode value difference.
+    The difference between a lowercase and uppercase unicode letter is 32.
+    
+    Same time and space complexities as above.
+    */
     public String v2(String s) {
         StringBuilder sb = new StringBuilder();
 
@@ -38,6 +54,16 @@ public class P_1544_MakeTheStringGreat {
         return sb.toString();
     }
     
+    /*
+    In my opinion, this solution is the easiest to understand. We use a Stack, which allows us to use push(),
+    pop(), and peek() methods. After iterating through the input string, we use a StringBuilder to concatenate
+    all the characters together.
+    In addition, the character comparison check here is easier/more intuitive: if the 2 characters are not the
+    same, but their lowercase characters are, it means that they have different letter cases.
+    
+    Same time and space complexities as above, except that the time complexity for this one is actually
+    O(n + n) => O(n).
+    */
     public String v3(String s) {
         Stack<Character> stack = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
