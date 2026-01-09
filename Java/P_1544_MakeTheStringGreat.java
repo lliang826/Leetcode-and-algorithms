@@ -68,7 +68,8 @@ public class P_1544_MakeTheStringGreat {
         Stack<Character> stack = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (!stack.isEmpty() && Character.toLowerCase(stack.peek()) == Character.toLowerCase(c) && stack.peek() != c) {
+            if (!stack.isEmpty() && Character.toLowerCase(stack.peek()) == Character.toLowerCase(c)
+                    && stack.peek() != c) {
                 stack.pop();
             } else {
                 stack.push(c);
@@ -80,6 +81,13 @@ public class P_1544_MakeTheStringGreat {
             sb.append(c);
         }
         return sb.toString();
+    }
+    
+    /*
+    TODO: 2 pointer approach.
+    */
+    public String v4(String s) {
+        return "";
     }
     
     public static void main(String[] args) {
