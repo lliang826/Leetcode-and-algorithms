@@ -1,3 +1,5 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 public class P_71_SimplifyPath {
@@ -32,7 +34,32 @@ public class P_71_SimplifyPath {
         return sb.toString();
     }
 
+    public String v2(String path) {
+        Deque<String> stack = new ArrayDeque<>();
+        String[] parts = path.split("/");
+
+        for (String part : parts) {
+            if (part.equals("") || part.equals(".")) {
+                continue;
+            }
+            if (part.equals("..")) {
+                if (!stack.isEmpty()) {
+                    stack.removeLast();
+                }
+                continue;
+            }
+            stack.addLast(part);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String s : stack) {
+            sb.append("/");
+            sb.append(s);
+        }
+        return sb.length() > 0 ? sb.toString() : "/";
+    }
+
     public static void main(String[] args) {
-        
+
     }
 }
