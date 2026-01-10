@@ -20,4 +20,20 @@ public class P_933_NumberOfRecentCalls {
             return this.queue.size();
         }
     }
+
+    class RecentCounter2 {
+        private Queue<Integer> queue;
+
+        public RecentCounter2() {
+            this.queue = new ArrayDeque<>();
+        }
+        
+        public int ping(int t) {
+            this.queue.offer(t);
+            while (this.queue.peek() < t - 3000) {
+                this.queue.poll();
+            }
+            return this.queue.size();
+        }
+    }
 }
