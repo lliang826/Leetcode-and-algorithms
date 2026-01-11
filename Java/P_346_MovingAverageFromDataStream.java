@@ -26,4 +26,29 @@ public class P_933_NumberOfRecentCalls {
             return sum / this.queue.size();
         }
     }
+
+    class MovingAverage2 {
+        private Queue<Integer> queue;
+        private int windowSize;
+        private double sum;
+
+        public MovingAverage2(int size) {
+            this.queue = new ArrayDeque<>();
+            this.windowSize = size;
+            this.sum = 0;
+        }
+        
+        public double next(int val) {
+            this.queue.offer(val);
+            this.sum += val;
+            while (this.queue.size() > this.windowSize) {
+                this.sum -= this.queue.poll();
+            }
+            return this.sum / this.queue.size();
+        }
+    }
+
+    public static void main(String[] args) {
+        
+    }
 }
