@@ -95,9 +95,9 @@ public class P_933_NumberOfRecentCalls {
             // Test 3: Pings fall out of window
             {
                 {1, 1},
-                {3002, 2},
-                {6003, 2},
-                {9004, 2}
+                {3002, 1},
+                {6003, 1},
+                {9004, 1}
             },
             // Test 4: Single ping
             {
@@ -115,8 +115,8 @@ public class P_933_NumberOfRecentCalls {
                 {1000, 1},
                 {1001, 2},
                 {1002, 3},
-                {4002, 3},
-                {4003, 3}
+                {4002, 2},
+                {4003, 2}
             },
             // Test 7: Large gaps
             {
@@ -133,7 +133,6 @@ public class P_933_NumberOfRecentCalls {
         for (int i = 0; i < testSets.length; i++) {
             RecentCounter counter = solver.new RecentCounter();
             int[][] testCase = testSets[i];
-            boolean allPass = true;
             
             System.out.printf("Test Set %d:\n", i + 1);
             for (int j = 0; j < testCase.length; j++) {
@@ -142,7 +141,6 @@ public class P_933_NumberOfRecentCalls {
                 int actual = counter.ping(timestamp);
                 
                 boolean ok = expected == actual;
-                if (!ok) allPass = false;
                 totalTests1++;
                 if (ok) pass1++;
                 
@@ -161,7 +159,6 @@ public class P_933_NumberOfRecentCalls {
         for (int i = 0; i < testSets.length; i++) {
             RecentCounter2 counter = solver.new RecentCounter2();
             int[][] testCase = testSets[i];
-            boolean allPass = true;
             
             System.out.printf("Test Set %d:\n", i + 1);
             for (int j = 0; j < testCase.length; j++) {
@@ -170,7 +167,6 @@ public class P_933_NumberOfRecentCalls {
                 int actual = counter.ping(timestamp);
                 
                 boolean ok = expected == actual;
-                if (!ok) allPass = false;
                 totalTests2++;
                 if (ok) pass2++;
                 
