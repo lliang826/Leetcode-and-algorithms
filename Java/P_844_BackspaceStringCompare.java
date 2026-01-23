@@ -65,6 +65,63 @@ public class P_844_BackspaceStringCompare {
     Space: O(1), we only use a constant amount of extra space
     */
     public boolean v3(String s, String t) {
+        int sIndex = s.length() - 1;
+        int tIndex = t.length() - 1;
+        int sSkip = 0;
+        int tSkip = 0;
+        Character sChar = s.charAt(sIndex);
+        Character tChar = t.charAt(tIndex);
+
+        while (sIndex >= 0 && tIndex >= 0) {
+            if (sChar == '#') {
+                sSkip++;
+                sIndex--;
+                continue;
+            }
+            if (tChar == '#') {
+                tSkip++;
+                tIndex--;
+                continue;
+            }
+            if (sSkip > 0) {
+                sSkip--;
+                sIndex--;
+                continue;
+            }
+            if (tSkip > 0) {
+                tSkip--;
+                tIndex--;
+                continue;
+            }
+            if (sSkip == 0 && tSkip == 0 && sChar != '#' && tChar != '#' && sChar != tChar) {
+                return false;
+            }
+            sIndex--;
+            tIndex--;
+        }
+
+        while (sSkip > 0 || sChar == '#') {
+            if (sChar == '#') {
+                sSkip++;
+            } else {
+                sSkip--;
+                
+            }
+            sIndex--;
+        }
+        while (tSkip > 0 || tChar == '#') {
+            if (tChar == '#') {
+                tSkip++;
+            } else {
+                tSkip--;
+            }
+            tIndex--;
+        }
+
+        if (sIndex != tIndex) {
+            return false;
+        }
+
         return true;
     }
 
@@ -123,8 +180,26 @@ public class P_844_BackspaceStringCompare {
         System.out.printf("\nSummary: %d/%d tests passed.\n", pass2, tests.length);
 
         System.out.println("\n" + "=".repeat(50));
+        System.out.println("Running tests for P_844_BackspaceStringCompare.v3\n");
+        int pass3 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            String s = (String) tests[i][0];
+            String t = (String) tests[i][1];
+            boolean expected = (boolean) tests[i][2];
+            boolean actual = solver.v3(s, t);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass3++;
+            System.out.printf("Test %d: s=\"%s\", t=\"%s\" => expected=%b, actual=%b => %s\n",
+                    i + 1, s, t, expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass3, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("backspaceCompare: %d/%d tests passed\n", pass1, tests.length);
         System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
+        System.out.printf("v3: %d/%d tests passed\n", pass3, tests.length);
     }
 }
