@@ -55,4 +55,23 @@ public class P_901_OnlineStockSpan {
             return span;
         }
     }
+
+    class StockSpanner3 {
+        private Deque<int[]> deque;
+
+        public StockSpanner3() {
+            deque = new ArrayDeque<>();
+        }
+
+        public int next(int price) {
+            int count = 0;
+            while (!deque.isEmpty() && deque.peekLast()[0] <= price) {
+                count += deque.removeLast()[1];
+            }
+
+            int span = count + 1;
+            deque.addLast(new int[] { price, span });
+            return span;
+        }
+    }
 }
