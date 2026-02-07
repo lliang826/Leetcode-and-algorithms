@@ -58,38 +58,6 @@ public class P_111_MinimumDepthOfBinaryTree {
         return Math.min(left, right) + 1;
     }
     
-    // Helper method to build tree from level-order array (null represents no node)
-    private static TreeNode buildTree(Integer[] values) {
-        if (values == null || values.length == 0 || values[0] == null) {
-            return null;
-        }
-        
-        TreeNode root = new TreeNode(values[0]);
-        java.util.Queue<TreeNode> queue = new java.util.LinkedList<>();
-        queue.offer(root);
-        int i = 1;
-        
-        while (!queue.isEmpty() && i < values.length) {
-            TreeNode node = queue.poll();
-            
-            // Left child
-            if (i < values.length && values[i] != null) {
-                node.left = new TreeNode(values[i]);
-                queue.offer(node.left);
-            }
-            i++;
-            
-            // Right child
-            if (i < values.length && values[i] != null) {
-                node.right = new TreeNode(values[i]);
-                queue.offer(node.right);
-            }
-            i++;
-        }
-        
-        return root;
-    }
-    
     public static void main(String[] args) {
         P_111_MinimumDepthOfBinaryTree solver = new P_111_MinimumDepthOfBinaryTree();
 
@@ -148,7 +116,7 @@ public class P_111_MinimumDepthOfBinaryTree {
         for (int i = 0; i < testSets.length; i++) {
             Integer[] treeArray = (Integer[]) testSets[i][0];
             int expected = (int) testSets[i][1];
-            TreeNode root = buildTree(treeArray);
+            TreeNode root = TreeNode.buildTree(treeArray);
             int actual = solver.minDepth(root);
             
             boolean ok = expected == actual;
@@ -172,7 +140,7 @@ public class P_111_MinimumDepthOfBinaryTree {
         for (int i = 0; i < testSets.length; i++) {
             Integer[] treeArray = (Integer[]) testSets[i][0];
             int expected = (int) testSets[i][1];
-            TreeNode root = buildTree(treeArray);
+            TreeNode root = TreeNode.buildTree(treeArray);
             int actual = solver.minDepth2(root);
             
             boolean ok = expected == actual;
