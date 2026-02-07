@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import utils.ListNode;
+import data_structures.ListNode;
 
 public class P_141_LinkedListCycle {
     /*

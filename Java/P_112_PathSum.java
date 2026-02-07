@@ -1,4 +1,4 @@
-import utils.TreeNode;
+import data_structures.TreeNode;
 
 public class P_112_PathSum {
     public boolean hasPathSum(TreeNode root, int targetSum) {

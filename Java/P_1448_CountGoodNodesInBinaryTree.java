@@ -1,4 +1,4 @@
-import utils.TreeNode;
+import data_structures.TreeNode;
 
 public class P_1448_CountGoodNodesInBinaryTree {
     public int goodNodes(TreeNode root) {

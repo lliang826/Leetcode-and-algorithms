@@ -1,4 +1,4 @@
-import utils.ListNode;
+import data_structures.ListNode;
 
 public class P_876_MiddleOfTheLinkedList {
     /*

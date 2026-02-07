@@ -1,4 +1,4 @@
-import utils.ListNode;
+import data_structures.ListNode;
 
 public class P_83_RemoveDuplicatesFromSortedList {
     /*

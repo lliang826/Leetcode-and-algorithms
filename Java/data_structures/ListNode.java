@@ -1,4 +1,4 @@
-package utils;
+package data_structures;
 
 public class ListNode {
     public int val;

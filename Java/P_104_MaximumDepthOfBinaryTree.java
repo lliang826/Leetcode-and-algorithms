@@ -1,4 +1,4 @@
-import utils.TreeNode;
+import data_structures.TreeNode;
 
 public class P_104_MaximumDepthOfBinaryTree {
     public int maxDepth(TreeNode root) {
