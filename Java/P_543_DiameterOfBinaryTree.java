@@ -36,7 +36,6 @@ public class P_543_DiameterOfBinaryTree {
 
     public static void main(String[] args) {
         P_543_DiameterOfBinaryTree outer = new P_543_DiameterOfBinaryTree();
-        Solution solver = outer.new Solution();
 
         // Helper to build trees
         TreeNode t1 = new TreeNode(1);
@@ -86,8 +85,13 @@ public class P_543_DiameterOfBinaryTree {
             int actual = s.diameterOfBinaryTree(input);
             boolean ok = expected == actual;
             if (ok) pass++;
-            System.out.printf("Test %d: expected=%d, actual=%d => %s\n", i + 1, expected, actual, (ok ? "PASS" : "FAIL"));
+            System.out.printf("Test %d: tree=%s => expected=%d, actual=%d => %s\n",
+                i + 1, TreeNode.treeToString(input), expected, actual, (ok ? "PASS" : "FAIL"));
         }
         System.out.printf("\nSummary: %d/%d tests passed.\n", pass, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
+        System.out.printf("Overall Summary:\n");
+        System.out.printf("diameterOfBinaryTree: %d/%d tests passed\n", pass, tests.length);
     }
 }

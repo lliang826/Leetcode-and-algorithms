@@ -71,4 +71,28 @@ public class TreeNode {
         }
         return null;
     }
+
+    // Helper method to print tree structure (level order, up to 7 nodes)
+    public static String treeToString(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        int count = 0;
+        java.util.Queue<TreeNode> q = new java.util.LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty() && count < 7) {
+            TreeNode node = q.poll();
+            if (node == null) {
+                sb.append("null");
+            } else {
+                sb.append(node.val);
+                q.add(node.left);
+                q.add(node.right);
+            }
+            if (count < 6) sb.append(",");
+            count++;
+        }
+        if (count == 7 && !q.isEmpty()) sb.append("...");
+        sb.append("]");
+        return sb.toString();
+    }
 }
