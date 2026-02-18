@@ -1,3 +1,5 @@
+import data_structures.TreeNode;
+
 public class P_938_RangeSumOfBST {
     public int rangeSumBST(TreeNode root, int low, int high) {
         if (root == null) {
@@ -12,7 +14,7 @@ public class P_938_RangeSumOfBST {
         return left + right + value;
     }
 
-    public int rangeSumBST(TreeNode root, int low, int high) {
+    public int rangeSumBST2(TreeNode root, int low, int high) {
         if (root == null) {
             return 0;
         }
