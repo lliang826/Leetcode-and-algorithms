@@ -3,6 +3,13 @@ import java.util.ArrayList;
 import data_structures.TreeNode;
 
 public class P_98_ValidateBinarySearchTree {
+    /*
+    DFS approach. Since this is a BST, we can perform an in-order traversal and store all the node values
+    into a list. If the list values are not in ascending order, then the tree is not a valid BST.
+    
+    Time: O(n), where n is the number of nodes in the tree, we visit every node once.
+    Space: O(n), we store all node values in a list
+    */
     class Solution {
         public boolean isValidBST(TreeNode root) {
             ArrayList<Integer> list = new ArrayList<>();
