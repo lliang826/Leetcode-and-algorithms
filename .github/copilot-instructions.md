@@ -33,12 +33,12 @@
 ## Project Conventions
 - Preserve the per-file manual test harness style in Java `main` methods.
 - Keep output readable and include an `Overall Summary:` block at the end of test output when creating/updating harnesses in both Java and Python (see `Java/P_1929_ConcatenationOfArray.java`). Only one summary block per test run, covering all methods tested.
-- Follow the repo skill guidance when solving/editing LeetCode tasks: `.github/skills/leetcode-helper/SKILL.md`.
+- Follow the repo skill guidance when solving/editing LeetCode tasks: `.github/skills/leetcode-tutor/SKILL.md`.
 - Keep edits surgical: do not rename files/classes or refactor unrelated solutions.
 
 ## Integration Points
 - Internal integration is mostly Java imports from `Java/data_structures/`.
-- AI-agent workflow references in `.github/skills/leetcode-helper/` and `.github/agents/` provide repo-specific behavior and expectations.
+- AI-agent workflow references in `.github/skills/leetcode-tutor/` and `.github/agents/` provide repo-specific behavior and expectations.
 
 ## Security
 - This repository is local algorithm code with no standard auth/secrets flow.
