@@ -31,7 +31,8 @@ public class P_49_GroupAnagrams {
 
         for (String s : strs) {
             int[] arr = new int[26];
-            for (char c : s.toCharArray()) {
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
                 arr[c - 'a']++;
             }
 
