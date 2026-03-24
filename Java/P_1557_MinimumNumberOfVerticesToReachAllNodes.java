@@ -49,4 +49,21 @@ public class P_1557_MinimumNumberOfVerticesToReachAllNodes {
             }
         }
     }
+
+    public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
+        Set<Integer> nodesWithIncomingEdges = new HashSet<>();
+        for (List<Integer> list : edges) {
+            int to = list.get(1);
+            nodesWithIncomingEdges.add(to);
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (!nodesWithIncomingEdges.contains(i)) {
+                res.add(i);
+            }
+        }
+
+        return res;
+    }
 }
