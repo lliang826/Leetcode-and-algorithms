@@ -45,4 +45,46 @@ public class P_695_MaxAreaOfIsland {
             return row >= 0 && row <= m - 1 && col >= 0 && col <= n - 1;
         }
     }
+
+    class Solution2 {
+        boolean[][] visited;
+        int[][] directions = new int[][] { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+        public int maxAreaOfIsland(int[][] grid) {
+            visited = new boolean[grid.length][grid[0].length];
+            int maxArea = 0;
+
+            for (int i = 0; i < grid.length; i++) {
+                for (int j = 0; j < grid[0].length; j++) {
+                    if (grid[i][j] == 1 && !visited[i][j]) {
+                        int area = dfs(i, j, grid);
+                        maxArea = Math.max(maxArea, area);
+                    }
+                }
+            }
+
+            return maxArea;
+        }
+
+        private int dfs(int row, int col, int[][] grid) {
+            visited[row][col] = true;
+            int area = 1;
+
+            for (int[] d : directions) {
+                int x = row + d[0];
+                int y = col + d[1];
+                if (isValid(x, y, grid) && grid[x][y] == 1 && !visited[x][y]) {
+                    area += dfs(x, y, grid);
+                }
+            }
+            return area;
+        }
+
+        private boolean isValid(int row, int col, int[][] grid) {
+            int m = grid.length;
+            int n = grid[0].length;
+
+            return row >= 0 && row <= m - 1 && col >= 0 && col <= n - 1;
+        }
+    }
 }
