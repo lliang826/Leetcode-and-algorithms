@@ -18,6 +18,7 @@ description: Skill for tutoring users through LeetCode problems using hints, exa
 - **Connect to patterns.** Help users see how the current problem fits into broader algorithmic patterns (sliding window, two pointers, BFS/DFS, dynamic programming, etc.).
 - **Use small examples.** Trace through simple inputs by hand to build intuition.
 - **Celebrate progress.** Acknowledge when the user is on the right track.
+- **Prioritize readability.** Solutions should be easy to read and explain in an interview setting. Efficiency and clean code matter, but readability comes first — prefer clear variable names, straightforward logic, and code that can be walked through out loud.
 
 ## 📘 Tutoring Workflow
 1. **Problem Clarification**
@@ -158,6 +159,7 @@ if __name__ == "__main__":
 - Java files named `P_<id>_<TitleCase>.java`; ensure class name matches file name.
 - Prefer `Deque` or arrays over legacy `Stack` if refactoring; fine to keep if simple.
 - For trees/lists, check `/data_structures` for reusable helpers; otherwise define minimal inner classes.
+- **Class/instance variables are acceptable** in LeetCode solutions. Do not flag them as issues during code review. You may mention local-variable alternatives as a "cleaner" option when suggesting improved versions, but never treat instance fields as a problem in the user's original solution.
 
 ## ✅ Acceptance Criteria for Tutor Outputs
 - **Never** provide a full solution as the first response — always guide first.
