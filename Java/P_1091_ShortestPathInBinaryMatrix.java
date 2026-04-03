@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Queue;
 
 public class P_1091_ShortestPathInBinaryMatrix {
@@ -64,5 +65,55 @@ public class P_1091_ShortestPathInBinaryMatrix {
         private boolean isValid(int row, int col, int n) {
             return row >= 0 && row < n && col >= 0 && col < n;
         }
+    }
+
+    public static void main(String[] args) {
+        P_1091_ShortestPathInBinaryMatrix outer = new P_1091_ShortestPathInBinaryMatrix();
+        Solution solver = outer.new Solution();
+
+        // Test cases: {grid, expected shortest path length}
+        Object[][] tests = new Object[][] {
+                // LeetCode examples
+                { new int[][] { { 0, 1 }, { 1, 0 } }, 2 },
+                { new int[][] { { 0, 0, 0 }, { 1, 1, 0 }, { 1, 1, 0 } }, 4 },
+                { new int[][] { { 1, 0, 0 }, { 1, 1, 0 }, { 1, 1, 0 } }, -1 },
+                // Single cell
+                { new int[][] { { 0 } }, 1 },
+                { new int[][] { { 1 } }, -1 },
+                // End cell blocked
+                { new int[][] { { 0, 0 }, { 0, 1 } }, -1 },
+                // All clear 3x3 — diagonal path length 3
+                { new int[][] { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } }, 3 },
+                // Start surrounded by walls
+                { new int[][] { { 0, 1, 0 }, { 1, 1, 0 }, { 0, 0, 0 } }, -1 },
+                // Forced longer path
+                { new int[][] { { 0, 0, 0 }, { 1, 1, 0 }, { 0, 0, 0 } }, 4 },
+                // Larger 4x4 grid
+                { new int[][] {
+                        { 0, 0, 1, 0 },
+                        { 1, 0, 1, 0 },
+                        { 1, 0, 0, 0 },
+                        { 0, 0, 0, 0 } }, 4 },
+        };
+
+        System.out.println("Running tests for P_1091_ShortestPathInBinaryMatrix.shortestPathBinaryMatrix\n");
+        int passed = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[][] grid = (int[][]) tests[i][0];
+            int expected = (int) tests[i][1];
+            // Deep-copy grid since it's not mutated, but keep habit
+            int[][] copy = Arrays.stream(grid).map(int[]::clone).toArray(int[][]::new);
+            int actual = solver.shortestPathBinaryMatrix(copy);
+
+            boolean ok = expected == actual;
+            if (ok) passed++;
+            String gridStr = Arrays.deepToString(grid);
+            System.out.printf("Test %d: grid=%s => expected=%d, actual=%d => %s\n",
+                    i + 1, gridStr, expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+        System.out.printf("Overall Summary:\n");
+        System.out.printf("shortestPathBinaryMatrix: %d/%d tests passed\n", passed, tests.length);
     }
 }
