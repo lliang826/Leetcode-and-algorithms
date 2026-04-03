@@ -160,6 +160,7 @@ if __name__ == "__main__":
 - Prefer `Deque` or arrays over legacy `Stack` if refactoring; fine to keep if simple.
 - For trees/lists, check `/data_structures` for reusable helpers; otherwise define minimal inner classes.
 - **Class/instance variables are acceptable** in LeetCode solutions. Do not flag them as issues during code review. You may mention local-variable alternatives as a "cleaner" option when suggesting improved versions, but never treat instance fields as a problem in the user's original solution.
+- **Inner `class Solution` wrappers are acceptable.** Many solution files use a non-static inner `class Solution { }` inside the outer class (mirroring LeetCode's editor). Do not flag this as an issue or suggest flattening it. It is a valid repo convention alongside files that put methods directly on the outer class.
 
 ## ✅ Acceptance Criteria for Tutor Outputs
 - **Never** provide a full solution as the first response — always guide first.
