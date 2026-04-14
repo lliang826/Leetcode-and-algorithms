@@ -7,6 +7,16 @@ import java.util.Map;
 import java.util.Queue;
 
 public class P_1129_ShortestPathWithAlternatingColors {
+    /*
+    Augmented-state BFS. Since each node can be reached with edges of different color, we need an extra
+    state/dimension; node + color. Both the queue and the visited array are 2D.
+    Breadth-first search over states of the form (node, last color used). We start from node 0 in both
+    color states so the first real edge can be either red or blue. Because a node can be reached with two
+    different last-edge colors, we track visited[node][color] instead of just visited[node].
+
+    Time: O(n + r + b), where r is redEdges.length and b is blueEdges.length
+    Space: O(n + r + b), for the adjacency lists, queue, and visited table
+    */
     class Solution {
         Map<Integer, List<Integer>> redMap = new HashMap<>();
         Map<Integer, List<Integer>> blueMap = new HashMap<>();
@@ -78,6 +88,10 @@ public class P_1129_ShortestPathWithAlternatingColors {
         }
     }
 
+    /*
+    Almost identical to the solution above, but we use constants for the Blue and Red colors to
+    improve readability, and we also use for each loops in the buildGraphs() helper function.
+    */
     class Solution2 {
         int RED = 0;
         int BLUE = 1;
@@ -149,5 +163,77 @@ public class P_1129_ShortestPathWithAlternatingColors {
                 blueGraph.get(edge[0]).add(edge[1]);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        P_1129_ShortestPathWithAlternatingColors outer = new P_1129_ShortestPathWithAlternatingColors();
+
+        // Test cases: {n, red edges, blue edges, expected output}
+        Object[][] tests = new Object[][] {
+                { 1, new int[][] {}, new int[][] {}, new int[] { 0 } },
+                { 3, new int[][] { { 0, 1 }, { 1, 2 } }, new int[][] {}, new int[] { 0, 1, -1 } },
+                { 3, new int[][] { { 0, 1 } }, new int[][] { { 1, 2 } }, new int[] { 0, 1, 2 } },
+                { 3, new int[][] {}, new int[][] { { 0, 1 }, { 1, 2 } }, new int[] { 0, 1, -1 } },
+                { 3, new int[][] { { 0, 1 } }, new int[][] { { 2, 1 } }, new int[] { 0, 1, -1 } },
+                { 5, new int[][] { { 0, 1 }, { 0, 2 } }, new int[][] { { 1, 3 }, { 2, 3 }, { 3, 4 } },
+                        new int[] { 0, 1, 1, 2, -1 } },
+                { 5, new int[][] { { 0, 1 }, { 2, 3 }, { 3, 4 } }, new int[][] { { 1, 2 }, { 2, 1 } },
+                        new int[] { 0, 1, 2, 3, -1 } },
+                { 4, new int[][] { { 0, 1 }, { 2, 2 } }, new int[][] { { 1, 2 }, { 2, 3 }, { 3, 1 } },
+                        new int[] { 0, 1, 2, 4 } }
+        };
+
+        System.out.println("Running tests for P_1129_ShortestPathWithAlternatingColors.Solution\n");
+        int pass1 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int n = (int) tests[i][0];
+            int[][] redEdges = deepCopy((int[][]) tests[i][1]);
+            int[][] blueEdges = deepCopy((int[][]) tests[i][2]);
+            int[] expected = (int[]) tests[i][3];
+            Solution solver = outer.new Solution();
+            int[] actual = solver.shortestAlternatingPaths(n, redEdges, blueEdges);
+
+            boolean ok = Arrays.equals(expected, actual);
+            if (ok)
+                pass1++;
+            System.out.printf("Test %d: n=%d, red=%s, blue=%s => expected=%s, actual=%s => %s\n",
+                    i + 1, n, Arrays.deepToString((int[][]) tests[i][1]), Arrays.deepToString((int[][]) tests[i][2]),
+                    Arrays.toString(expected), Arrays.toString(actual), (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_1129_ShortestPathWithAlternatingColors.Solution2\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int n = (int) tests[i][0];
+            int[][] redEdges = deepCopy((int[][]) tests[i][1]);
+            int[][] blueEdges = deepCopy((int[][]) tests[i][2]);
+            int[] expected = (int[]) tests[i][3];
+            Solution2 solver = outer.new Solution2();
+            int[] actual = solver.shortestAlternatingPaths(n, redEdges, blueEdges);
+
+            boolean ok = Arrays.equals(expected, actual);
+            if (ok)
+                pass2++;
+            System.out.printf("Test %d: n=%d, red=%s, blue=%s => expected=%s, actual=%s => %s\n",
+                    i + 1, n, Arrays.deepToString((int[][]) tests[i][1]), Arrays.deepToString((int[][]) tests[i][2]),
+                    Arrays.toString(expected), Arrays.toString(actual), (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+        System.out.printf("Overall Summary:\n");
+        System.out.printf("Solution: %d/%d tests passed\n", pass1, tests.length);
+        System.out.printf("Solution2: %d/%d tests passed\n", pass2, tests.length);
+    }
+
+    private static int[][] deepCopy(int[][] edges) {
+        int[][] copy = new int[edges.length][];
+
+        for (int i = 0; i < edges.length; i++) {
+            copy[i] = Arrays.copyOf(edges[i], edges[i].length);
+        }
+
+        return copy;
     }
 }
