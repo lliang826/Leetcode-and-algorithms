@@ -49,4 +49,55 @@ public class P_1926_NearestExitFromEntranceInMaze {
             return row >= 0 && row < m && col >= 0 && col < n && maze[row][col] == '.';
         }
     }
+
+    class Solution2 {
+        public int nearestExit(char[][] maze, int[] entrance) {
+            Queue<int[]> queue = new ArrayDeque<>();
+            int[][] directions = new int[][] { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+            int m = maze.length;
+            int n = maze[0].length;
+
+            queue.offer(entrance);
+            maze[entrance[0]][entrance[1]] = '+';
+            int steps = 0;
+
+            while (!queue.isEmpty()) {
+                int levelSize = queue.size();
+
+                for (int i = 0; i < levelSize; i++) {
+                    int[] node = queue.poll();
+
+                    if (!isEntrance(entrance, node[0], node[1]) && isBorderExit(m, n, node[0], node[1])) {
+                        return steps;
+                    }
+
+                    for (int[] d : directions) {
+                        int x = node[0] + d[0];
+                        int y = node[1] + d[1];
+                        if (isValid(x, y, maze, m, n)) {
+                            queue.offer(new int[] { x, y });
+                            maze[x][y] = '+';
+                        }
+                    }
+                }
+
+                steps++;
+            }
+
+            return -1;
+        }
+
+        private boolean isValid(int row, int col, char[][] maze, int m, int n) {
+            return row >= 0 && row < m && col >= 0 && col < n && maze[row][col] == '.';
+        }
+
+        private boolean isBorderExit(int m, int n, int row, int col) {
+            return row == 0 || row == m - 1 || col == 0 || col == n - 1;
+        }
+
+        private boolean isEntrance(int[] entrance, int row, int col) {
+            return row == entrance[0] && col == entrance[1];
+        }
+    }
+
 }
