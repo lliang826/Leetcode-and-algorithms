@@ -18,7 +18,7 @@ public class P_752_OpenTheLock {
     Time: O(D) where D is the number of deadends. 
       - O(nodes + edges) => O(10^4 + 10^4 * 8) => O(1) all constants
       - But we do have to process the deadends input, so time complexity is O(D)
-    Space: O(1) effectively — the seen set and queue hold at most 10,000 entries, which is a constant.
+    Space: O(1) effectively — the seen set and queue hold at most 10^4 nodes, which is a constant.
     */
     class Solution {
         public int openLock(String[] deadends, String target) {
