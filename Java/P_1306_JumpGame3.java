@@ -71,4 +71,68 @@ public class P_1306_JumpGame3 {
 
         return false;
     }
+
+    public static void main(String[] args) {
+        P_1306_JumpGame3 solver = new P_1306_JumpGame3();
+
+        // Test cases: { arr, start, expected }
+        // Why these cases:
+        // 1. Standard example from the problem — typical reachable case.
+        // 2. Same array, different start — different traversal path still finds 0.
+        // 3. Unreachable — a 0 exists but is isolated by parity/jumps.
+        // 4. Start already on a 0 — earliest possible success.
+        // 5. Single element, value 0 — smallest reachable case.
+        // 6. Single element, non-zero — smallest unreachable case.
+        // 7. All zeros — trivially reachable from any start.
+        // 8. No zeros at all — can never succeed.
+        // 9. Cycle without a 0 — ensures the visited set prevents infinite loops.
+        // 10. Long array, only reachable via a chain of jumps — exercises BFS traversal.
+        Object[][] tests = new Object[][] {
+                { new int[] { 4, 2, 3, 0, 3, 1, 2 }, 5, true },
+                { new int[] { 4, 2, 3, 0, 3, 1, 2 }, 0, true },
+                { new int[] { 3, 0, 2, 1, 2 }, 2, false },
+                { new int[] { 0, 1 }, 0, true },
+                { new int[] { 0 }, 0, true },
+                { new int[] { 1 }, 0, false },
+                { new int[] { 0, 0, 0, 0 }, 2, true },
+                { new int[] { 1, 2, 3, 4, 5 }, 0, false },
+                { new int[] { 2, 1, 1, 2 }, 0, false },
+                { new int[] { 1, 1, 1, 1, 1, 1, 1, 0 }, 0, true }
+        };
+
+        System.out.println("Running tests for P_1306_JumpGame3.canReach\n");
+        int pass1 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] arr = (int[]) tests[i][0];
+            int start = (int) tests[i][1];
+            boolean expected = (boolean) tests[i][2];
+            boolean actual = solver.canReach(arr, start);
+
+            boolean ok = expected == actual;
+            if (ok) pass1++;
+            System.out.printf("Test %d: arr=%s, start=%d => expected=%b, actual=%b => %s%n",
+                    i + 1, java.util.Arrays.toString(arr), start, expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_1306_JumpGame3.canReach2\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] arr = (int[]) tests[i][0];
+            int start = (int) tests[i][1];
+            boolean expected = (boolean) tests[i][2];
+            boolean actual = solver.canReach2(arr, start);
+
+            boolean ok = expected == actual;
+            if (ok) pass2++;
+            System.out.printf("Test %d: arr=%s, start=%d => expected=%b, actual=%b => %s%n",
+                    i + 1, java.util.Arrays.toString(arr), start, expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+        System.out.printf("Overall Summary:%n");
+        System.out.printf("canReach:  %d/%d tests passed%n", pass1, tests.length);
+        System.out.printf("canReach2: %d/%d tests passed%n", pass2, tests.length);
+    }
 }
