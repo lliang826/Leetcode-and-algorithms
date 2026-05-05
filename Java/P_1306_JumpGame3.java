@@ -72,6 +72,37 @@ public class P_1306_JumpGame3 {
         return false;
     }
 
+    class Solution {
+
+        boolean[] seen;
+        boolean found = false;
+
+        public boolean canReach(int[] arr, int start) {
+            int n = arr.length;
+            this.seen = new boolean[n];
+            this.dfs(arr, start, n);
+            return found;
+        }
+
+        private void dfs(int[] arr, int index, int n) {
+            seen[index] = true;
+            if (arr[index] == 0) {
+                this.found = true;
+                return;
+            }
+
+            int jumpUp = index + arr[index];
+            int jumpDown = index - arr[index];
+            int[] jumps = new int[] { jumpUp, jumpDown };
+
+            for (int jump : jumps) {
+                if (jump >= 0 && jump < n && !seen[jump]) {
+                    dfs(arr, jump, n);
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         P_1306_JumpGame3 solver = new P_1306_JumpGame3();
 
@@ -86,7 +117,8 @@ public class P_1306_JumpGame3 {
         // 7. All zeros — trivially reachable from any start.
         // 8. No zeros at all — can never succeed.
         // 9. Cycle without a 0 — ensures the visited set prevents infinite loops.
-        // 10. Long array, only reachable via a chain of jumps — exercises BFS traversal.
+        // 10. Long array, only reachable via a chain of jumps — exercises BFS
+        // traversal.
         Object[][] tests = new Object[][] {
                 { new int[] { 4, 2, 3, 0, 3, 1, 2 }, 5, true },
                 { new int[] { 4, 2, 3, 0, 3, 1, 2 }, 0, true },
@@ -109,7 +141,8 @@ public class P_1306_JumpGame3 {
             boolean actual = solver.canReach(arr, start);
 
             boolean ok = expected == actual;
-            if (ok) pass1++;
+            if (ok)
+                pass1++;
             System.out.printf("Test %d: arr=%s, start=%d => expected=%b, actual=%b => %s%n",
                     i + 1, java.util.Arrays.toString(arr), start, expected, actual, (ok ? "PASS" : "FAIL"));
         }
@@ -125,14 +158,34 @@ public class P_1306_JumpGame3 {
             boolean actual = solver.canReach2(arr, start);
 
             boolean ok = expected == actual;
-            if (ok) pass2++;
+            if (ok)
+                pass2++;
+            System.out.printf("Test %d: arr=%s, start=%d => expected=%b, actual=%b => %s%n",
+                    i + 1, java.util.Arrays.toString(arr), start, expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_1306_JumpGame3.Solution.canReach (DFS)\n");
+        int pass3 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] arr = (int[]) tests[i][0];
+            int start = (int) tests[i][1];
+            boolean expected = (boolean) tests[i][2];
+            P_1306_JumpGame3.Solution dfsSolver = solver.new Solution();
+            boolean actual = dfsSolver.canReach(arr, start);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass3++;
             System.out.printf("Test %d: arr=%s, start=%d => expected=%b, actual=%b => %s%n",
                     i + 1, java.util.Arrays.toString(arr), start, expected, actual, (ok ? "PASS" : "FAIL"));
         }
 
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:%n");
-        System.out.printf("canReach:  %d/%d tests passed%n", pass1, tests.length);
-        System.out.printf("canReach2: %d/%d tests passed%n", pass2, tests.length);
+        System.out.printf("canReach:           %d/%d tests passed%n", pass1, tests.length);
+        System.out.printf("canReach2:          %d/%d tests passed%n", pass2, tests.length);
+        System.out.printf("Solution.canReach:  %d/%d tests passed%n", pass3, tests.length);
     }
 }
