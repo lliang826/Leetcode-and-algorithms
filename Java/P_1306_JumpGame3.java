@@ -3,7 +3,32 @@ import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 
+/*
+Implicit graph problem.
+ 
+For this problem, we have a start state (the input array), a goal state (any
+index with a value of 0), and rules that generate neighbors (jump up to i +
+arr[i] or jump down to i - arr[i]).
+ 
+We can use either DFS or BFS for this problem; both approaches have the same
+time and space complexity.     
+
+Time: O(nodes + edges) => O(n + n * 2) => O(3n) => O(n)
+Space: O(n) for the seen hashset/boolean array and the queue/stack
+
+I kept the queue level processing out of habit - I always include it when I use 
+a BFS approach. For this problem though, it doesn't ask for the shortest path or
+anything like that, so it's not needed. Can remove the levelSize variable and the for loop.
+
+Since recursive DFS uses the stack (iterative Stack/Deque data structure uses heap), 
+it's not suitable for tall trees and graphs with a large height/depth. 
+For those kinds of inputs, it's better to use BFS since it uses the Queue data 
+structure, which is stored on the heap.
+*/
 public class P_1306_JumpGame3 {
+    /*
+     * BFS with seen boolean array.
+     */
     public boolean canReach(int[] arr, int start) {
         int n = arr.length;
         Queue<Integer> queue = new ArrayDeque<>();
@@ -38,6 +63,9 @@ public class P_1306_JumpGame3 {
         return false;
     }
 
+    /*
+     * BFS with seen hashset and for loop/array to iterate through edges.
+     */
     public boolean canReach2(int[] arr, int start) {
         int n = arr.length;
         Queue<Integer> queue = new ArrayDeque<>();
@@ -72,8 +100,10 @@ public class P_1306_JumpGame3 {
         return false;
     }
 
+    /*
+     * DFS with seen boolean array.
+     */
     class Solution {
-
         boolean[] seen;
         boolean found = false;
 
