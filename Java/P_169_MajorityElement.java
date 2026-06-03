@@ -29,4 +29,40 @@ public class P_169_MajorityElement {
 
         return 0;
     }
+
+    public static void main(String[] args) {
+        P_169_MajorityElement solver = new P_169_MajorityElement();
+
+        // Test cases: {input array, expected majority element}
+        Object[][] tests = new Object[][] {
+                { new int[] { 3, 2, 3 }, 3 },                          // basic odd-length
+                { new int[] { 2, 2, 1, 1, 1, 2, 2 }, 2 },              // candidate flips then recovers
+                { new int[] { 1 }, 1 },                                // single element
+                { new int[] { 4, 4 }, 4 },                             // all same, even length
+                { new int[] { 5, 5, 5, 5, 5 }, 5 },                    // all same, odd length
+                { new int[] { 1, 2, 1 }, 1 },                          // majority at the ends
+                { new int[] { 2, 1, 1 }, 1 },                          // majority at the tail
+                { new int[] { -1, -1, -1, 2, 3 }, -1 },                // negative majority value
+                { new int[] { 6, 5, 5, 6, 6, 6, 6 }, 6 },              // strong majority, interleaved
+                { new int[] { 7, 7, 8, 8, 7, 7, 8, 7, 7 }, 7 }         // long array, repeated cancellations
+        };
+
+        System.out.println("Running tests for P_169_MajorityElement.majorityElement\n");
+        int pass = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int expected = (int) tests[i][1];
+            int actual = solver.majorityElement(input);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass++;
+            System.out.printf("Test %d: input=%s => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+        System.out.printf("Overall Summary:\n");
+        System.out.printf("majorityElement: %d/%d tests passed\n", pass, tests.length);
+    }
 }
