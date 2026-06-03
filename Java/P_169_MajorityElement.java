@@ -30,6 +30,47 @@ public class P_169_MajorityElement {
         return 0;
     }
 
+    /*
+    Boyer-Moore Voting approach.
+    Picture the majority element as one team and all other elements combined as the opposing team. Each 
+    time you see a different element, you cancel one majority occurrence against one non-majority occurrence 
+    (count--). Since the majority element appears more than ⌊n/2⌋ times, it outnumbers everyone else put 
+    together — so it can never be fully cancelled. Whatever is left standing when the scan ends is the 
+    majority element.
+    
+    We keep a single candidate and a running count. Scanning left to right: when count is 0 we adopt the
+    current element as the candidate; when the current element matches the candidate we increment count (a
+    vote for it); otherwise we decrement count (a vote against, cancelling one majority occurrence with one
+    non-majority occurrence). Because the majority element appears more than floor(n/2) times, it outnumbers
+    every other element combined and can never be fully cancelled, so it survives as the final candidate.
+    The question's constraints guarantee a majority element exists, so no verification pass is needed.
+    
+    By cancelling out every instance of the majority element with another element, we will eventually have 
+    one or more instances of the majority element left over.
+    This only works if the input array has a clear majority element; if we had [1,1,2,2] it wouldn't work.
+    
+    Time: O(n), a single pass through the input array
+    Space: O(1), only two variables regardless of input size
+    */
+    public int boyerMoore(int[] nums) {
+        int candidate = 0;
+        int count = 0;
+
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
+            }
+
+            if (num == candidate) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+
+        return candidate;
+    }
+
     public static void main(String[] args) {
         P_169_MajorityElement solver = new P_169_MajorityElement();
 
@@ -48,7 +89,7 @@ public class P_169_MajorityElement {
         };
 
         System.out.println("Running tests for P_169_MajorityElement.majorityElement\n");
-        int pass = 0;
+        int pass1 = 0;
         for (int i = 0; i < tests.length; i++) {
             int[] input = (int[]) tests[i][0];
             int expected = (int) tests[i][1];
@@ -56,13 +97,30 @@ public class P_169_MajorityElement {
 
             boolean ok = expected == actual;
             if (ok)
-                pass++;
+                pass1++;
+            System.out.printf("Test %d: input=%s => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_169_MajorityElement.boyerMoore\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int expected = (int) tests[i][1];
+            int actual = solver.boyerMoore(input);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass2++;
             System.out.printf("Test %d: input=%s => expected=%d, actual=%d => %s\n",
                     i + 1, java.util.Arrays.toString(input), expected, actual, (ok ? "PASS" : "FAIL"));
         }
 
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
-        System.out.printf("majorityElement: %d/%d tests passed\n", pass, tests.length);
+        System.out.printf("majorityElement: %d/%d tests passed\n", pass1, tests.length);
+        System.out.printf("boyerMoore: %d/%d tests passed\n", pass2, tests.length);
     }
 }
