@@ -6,6 +6,30 @@ import java.util.Queue;
 import java.util.Set;
 
 public class P_127_WordLadder {
+    /*
+    This question is an implicit graph problem. It gives us the following:
+    1. Starting state (beginWord)
+    2. End/goal state (endWord)
+    3. Rules to define neighbors (changing one letter/char at a time, new word must be in wordList)
+    
+    Since the question asks for the shortest transformation sequence, we can use a BFS approach with a
+    hashset to track seen nodes/words.
+    
+    By using the typical BFS approach for graphs, this problem is pretty straightforward. But the tricky
+    part is transforming the string char by char - I did this with substring.
+    
+    Putting the wordList into a hashset at the beginning is also useful so checking if the transformed
+    word is in the list becomes a constant O(1) operation. We can also add a check at the beginning to
+    see if endWord exists in the wordList; if not, return 0 right away.
+    
+    Time: O(nodes * neighbors * work per neighbor + wordList build)
+          => O(n * 26L * L + n * L) => O(n * L^2 + n * L) => O(n * L^2)
+    Space: O(queue + seen + wordList) => O(nL + nL + nL) => O(n * L)
+    
+    Let n = number of words, L = word length. Note each word has 26 * L neighbors (not just 26), since we
+    try 26 letters at each of the L positions. Building each candidate substring is O(L), and each
+    hashset lookup/insert also hashes O(L) chars, so every candidate costs O(L).
+    */
     class Solution {
         public int ladderLength(String beginWord, String endWord, List<String> wordList) {
             Set<String> words = new HashSet<>();
@@ -50,6 +74,9 @@ public class P_127_WordLadder {
         }
     }
 
+    /*
+    Bidirectional BFS.
+    */
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         Set<String> beginSet = new HashSet<>();
         Set<String> endSet = new HashSet<>();
