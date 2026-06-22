@@ -30,54 +30,52 @@ public class P_127_WordLadder {
     try 26 letters at each of the L positions. Building each candidate substring is O(L), and each
     hashset lookup/insert also hashes O(L) chars, so every candidate costs O(L).
     */
-    class Solution {
-        public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-            Set<String> words = new HashSet<>();
-            for (String word : wordList) {
-                words.add(word);
-            }
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> words = new HashSet<>();
+        for (String word : wordList) {
+            words.add(word);
+        }
 
-            if (!words.contains(endWord)) {
-                return 0;
-            }
+        if (!words.contains(endWord)) {
+            return 0;
+        }
 
-            Queue<String> queue = new ArrayDeque<>();
-            Set<String> seen = new HashSet<>();
-            int count = 0;
+        Queue<String> queue = new ArrayDeque<>();
+        Set<String> seen = new HashSet<>();
+        int count = 0;
 
-            queue.offer(beginWord);
-            seen.add(beginWord);
+        queue.offer(beginWord);
+        seen.add(beginWord);
 
-            while (!queue.isEmpty()) {
-                int levelSize = queue.size();
-                count++;
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            count++;
 
-                for (int i = 0; i < levelSize; i++) {
-                    String s = queue.poll();
-                    if (s.equals(endWord)) {
-                        return count;
-                    }
+            for (int i = 0; i < levelSize; i++) {
+                String s = queue.poll();
+                if (s.equals(endWord)) {
+                    return count;
+                }
 
-                    for (int m = 0; m < s.length(); m++) {
-                        for (char c = 'a'; c <= 'z'; c++) {
-                            String newString = s.substring(0, m) + c + s.substring(m + 1, s.length());
-                            if (words.contains(newString) && !seen.contains(newString)) {
-                                seen.add(newString);
-                                queue.offer(newString);
-                            }
+                for (int m = 0; m < s.length(); m++) {
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        String newString = s.substring(0, m) + c + s.substring(m + 1, s.length());
+                        if (words.contains(newString) && !seen.contains(newString)) {
+                            seen.add(newString);
+                            queue.offer(newString);
                         }
                     }
                 }
             }
-
-            return 0;
         }
+
+        return 0;
     }
 
     /*
     Bidirectional BFS.
     */
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
         Set<String> beginSet = new HashSet<>();
         Set<String> endSet = new HashSet<>();
         Set<String> seen = new HashSet<>();
@@ -145,7 +143,7 @@ public class P_127_WordLadder {
                 { "red", "tax", Arrays.asList("ted", "tex", "red", "tax", "tad", "den", "rex", "pee"), 4 }
         };
 
-        System.out.println("Running tests for P_127_WordLadder.Solution.ladderLength (standard BFS)\n");
+        System.out.println("Running tests for P_127_WordLadder.ladderLength (standard BFS)\n");
         int pass1 = 0;
         for (int i = 0; i < tests.length; i++) {
             String begin = (String) tests[i][0];
@@ -154,8 +152,7 @@ public class P_127_WordLadder {
             List<String> list = (List<String>) tests[i][2];
             int expected = (int) tests[i][3];
 
-            P_127_WordLadder.Solution sol = outer.new Solution();
-            int actual = sol.ladderLength(begin, end, list);
+            int actual = outer.ladderLength(begin, end, list);
             boolean ok = actual == expected;
             if (ok) pass1++;
             System.out.printf("Test %d: begin=%s, end=%s, words=%s => expected=%d, actual=%d => %s%n",
@@ -164,7 +161,7 @@ public class P_127_WordLadder {
 
         System.out.println("\n" + "=".repeat(50));
 
-        System.out.println("\nRunning tests for P_127_WordLadder.ladderLength (bidirectional BFS)\n");
+        System.out.println("\nRunning tests for P_127_WordLadder.ladderLength2 (bidirectional BFS)\n");
         int pass2 = 0;
         for (int i = 0; i < tests.length; i++) {
             String begin = (String) tests[i][0];
@@ -174,7 +171,7 @@ public class P_127_WordLadder {
             int expected = (int) tests[i][3];
 
             P_127_WordLadder freshOuter = new P_127_WordLadder();
-            int actual = freshOuter.ladderLength(begin, end, list);
+            int actual = freshOuter.ladderLength2(begin, end, list);
             boolean ok = actual == expected;
             if (ok) pass2++;
             System.out.printf("Test %d: begin=%s, end=%s, words=%s => expected=%d, actual=%d => %s%n",
@@ -183,7 +180,7 @@ public class P_127_WordLadder {
 
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:%n");
-        System.out.printf("Solution.ladderLength (standard BFS):     %d/%d tests passed%n", pass1, tests.length);
-        System.out.printf("ladderLength (bidirectional BFS):         %d/%d tests passed%n", pass2, tests.length);
+        System.out.printf("ladderLength (standard BFS):              %d/%d tests passed%n", pass1, tests.length);
+        System.out.printf("ladderLength2 (bidirectional BFS):        %d/%d tests passed%n", pass2, tests.length);
     }
 }
