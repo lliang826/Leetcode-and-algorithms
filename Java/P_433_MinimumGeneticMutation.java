@@ -4,48 +4,50 @@ import java.util.Queue;
 import java.util.Set;
 
 public class P_433_MinimumGeneticMutation {
-    class Solution {
-        public int minMutation(String startGene, String endGene, String[] bank) {
-            Queue<String> queue = new ArrayDeque<>();
-            Set<String> seen = new HashSet<>();
-            int mutationCount = 0;
-            char[] genes = new char[] { 'A', 'C', 'G', 'T' };
+    public int minMutation(String startGene, String endGene, String[] bank) {
+        Set<String> bankSet = new HashSet<>();
+        for (String s : bank) {
+            bankSet.add(s);
+        }
 
-            Set<String> bankSet = new HashSet<>();
-            for (String str : bank) {
-                bankSet.add(str);
-            }
+        if (!bankSet.contains(endGene)) {
+            return -1;
+        }
 
-            queue.offer(startGene);
-            seen.add(startGene);
+        Queue<String> queue = new ArrayDeque<>();
+        Set<String> seen = new HashSet<>();
+        int count = 0;
+        char[] choices = new char[] { 'A', 'C', 'G', 'T' };
 
-            while (!queue.isEmpty()) {
-                int levelSize = queue.size();
+        queue.offer(startGene);
+        seen.add(startGene);
 
-                for (int i = 0; i < levelSize; i++) {
-                    String gene = queue.poll();
-                    if (gene.equals(endGene)) {
-                        return mutationCount;
-                    }
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
 
-                    for (int m = 0; m < 8; m++) {
-                        char c = gene.charAt(m);
-                        for (char g : genes) {
-                            if (c != g) {
-                                String s = gene.substring(0, m) + g + gene.substring(m + 1, 8);
-                                if (bankSet.contains(s) && !seen.contains(s)) {
-                                    queue.offer(s);
-                                    seen.add(s);
-                                }
+            for (int i = 0; i < levelSize; i++) {
+                String gene = queue.poll();
+                if (gene.equals(endGene)) {
+                    return count;
+                }
+
+                for (int j = 0; j < gene.length(); j++) {
+                    char c = gene.charAt(j);
+                    for (char choice : choices) {
+                        if (choice != c) {
+                            String newGene = gene.substring(0, j) + choice + gene.substring(j + 1);
+                            if (bankSet.contains(newGene) && !seen.contains(newGene)) {
+                                queue.offer(newGene);
+                                seen.add(newGene);
                             }
                         }
                     }
                 }
-
-                mutationCount++;
             }
 
-            return -1;
+            count++;
         }
+
+        return -1;
     }
 }
