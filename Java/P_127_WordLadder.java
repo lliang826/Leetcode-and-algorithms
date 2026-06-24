@@ -73,8 +73,40 @@ public class P_127_WordLadder {
     }
 
     /*
-    Bidirectional BFS.
-    */
+     * This is the same implicit graph problem as above, but we can speed up the
+     * search with a bidirectional BFS. Instead of fanning out only from beginWord
+     * until we reach endWord, we run two searches at the same time - one growing
+     * outward from beginWord and one growing outward from endWord - and stop the
+     * moment the two search frontiers meet in the middle.
+     *
+     * The intuition is like two people walking toward each other instead of one
+     * person walking the whole way: each side only has to cover about half the
+     * distance, so we explore far fewer nodes overall.
+     *
+     * A few implementation details that make this work:
+     * 1. We use sets (beginSet/endSet) instead of queues, where each set holds the
+     * entire current "level" of words on that side. A shared seen set keeps us from
+     * revisiting words.
+     * 2. On every iteration we always expand the smaller of the two frontiers (the
+     * swap at the top). Expanding the smaller side keeps the work balanced and
+     * minimizes the total number of neighbors we generate.
+     * 3. The neighbor generation is identical to the standard BFS (swap each of the
+     * L positions with each of 26 letters). The difference is the stopping
+     * condition: if a generated word already exists in the opposite frontier
+     * (endSet), the two searches have connected and we return count + 1.
+     *
+     * Same as before, putting wordList into a hashset gives O(1) membership checks,
+     * and we can return 0 immediately if endWord isn't in the list.
+     *
+     * Time: O(n * L^2) in the worst case - same asymptotic bound as standard BFS,
+     * since each word still has 26 * L neighbors and each candidate costs O(L) to
+     * build and hash. In practice bidirectional BFS visits dramatically fewer nodes
+     * because each side only searches to roughly half the depth: ~2 * b^(d/2)
+     * instead of ~b^d, where b is the branching factor and d is the path length.
+     * Space: O(queue/frontiers + seen + wordList) => O(nL + nL + nL) => O(n * L)
+     *
+     * Let n = number of words, L = word length.
+     */
     public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
         Set<String> beginSet = new HashSet<>();
         Set<String> endSet = new HashSet<>();
@@ -124,6 +156,47 @@ public class P_127_WordLadder {
         }
 
         return 0;
+    }
+
+    // Bidrectional BFS template
+    public int fn(int[][] graph, int start, int goal) {
+        if (start == goal)
+            return 0;
+        
+        Set<Integer> begin = new HashSet<>();
+        Set<Integer> end = new HashSet<>();
+        Set<Integer> seen = new HashSet<>();
+
+        begin.add(start);
+        end.add(goal);
+
+        seen.add(start);
+        seen.add(goal);
+
+        int steps = 0;
+
+        while (!begin.isEmpty() && !end.isEmpty()) {
+            if (begin.size() > end.size()) {
+                Set<Integer> temp = begin;
+                begin = end;
+                end = temp;
+            }
+
+            Set<Integer> next = new HashSet<>();
+            for (int node : begin) {
+                for (int neighbor : graph[node]) {
+                    if (end.contains(neighbor))
+                        return steps + 1;
+                    if (seen.add(neighbor))
+                        next.add(neighbor);
+                }
+            }
+            
+            begin = next;
+            steps++;
+        }
+
+        return -1;
     }
 
     public static void main(String[] args) {
