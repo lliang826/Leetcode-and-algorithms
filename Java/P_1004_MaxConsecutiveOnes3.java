@@ -61,6 +61,31 @@ public class P_1004_MaxConsecutiveOnes3 {
         return max;
     }
 
+    /*
+    Similar to v2, but we can reuse k as the counter, we don't need another variable.
+    */
+    public int v3(int[] nums, int k) {
+        int left = 0;
+        int max = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            if (nums[right] == 0) {
+                k--;
+            }
+
+            while (k < 0) {
+                if (nums[left] == 0) {
+                    k++;
+                }
+                left++;
+            }
+
+            max = Math.max(max, right - left + 1);
+        }
+
+        return max;
+    }
+
     public static void main(String[] args) {
         P_1004_MaxConsecutiveOnes3 solver = new P_1004_MaxConsecutiveOnes3();
 
@@ -120,8 +145,28 @@ public class P_1004_MaxConsecutiveOnes3 {
         System.out.printf("\nSummary: %d/%d tests passed.\n", passV2, tests.length);
 
         System.out.println("\n" + "=".repeat(50));
+        System.out.println("Running tests for P_1004_MaxConsecutiveOnes3.v3\n");
+        int passV3 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int k = (int) tests[i][1];
+            int expected = (int) tests[i][2];
+            int actual = solver.v3(input.clone(), k);
+
+            boolean ok = (expected == actual);
+            if (ok)
+                passV3++;
+            System.out.printf("Test %d: input=%s, k=%d => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), k, expected, actual,
+                    (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.printf("\nSummary: %d/%d tests passed.\n", passV3, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("longestOnes: %d/%d tests passed\n", pass, tests.length);
         System.out.printf("v2: %d/%d tests passed\n", passV2, tests.length);
+        System.out.printf("v3: %d/%d tests passed\n", passV3, tests.length);
     }
 }
