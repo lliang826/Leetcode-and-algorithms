@@ -66,21 +66,51 @@ public class P_525_ContiguousArray {
     public int v2(int[] nums) {
         Map<Integer, Integer> map = new HashMap<>();
         map.put(0, -1);
-        
+
         int maxLength = 0;
         int count = 0;
-        
+
         for (int i = 0; i < nums.length; i++) {
             count += nums[i] == 0 ? -1 : 1;
-            
+
             if (map.containsKey(count)) {
                 maxLength = Math.max(maxLength, i - map.get(count));
             } else {
                 map.put(count, i);
             }
         }
-        
+
         return maxLength;
+    }
+    
+    /*
+    Preprocess the prefix sums (0 is -1), the rest is the same (use a hashmap to check if the prefix already existed).
+    */
+    public int v3(int[] nums) {
+        int[] prefix = new int[nums.length];
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                sum--;
+            } else {
+                sum++;
+            }
+            prefix[i] = sum;
+        }
+
+        int max = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+
+        for (int i = 0; i < prefix.length; i++) {
+            if (map.containsKey(prefix[i])) {
+                max = Math.max(max, i - map.get(prefix[i]));
+            } else {
+                map.put(prefix[i], i);
+            }
+        }
+
+        return max;
     }
     
     public static void main(String[] args) {
@@ -139,8 +169,27 @@ public class P_525_ContiguousArray {
         System.out.printf("\nSummary: %d/%d tests passed.\n", pass2, tests.length);
 
         System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_525_ContiguousArray.v3\n");
+        int pass3 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int expected = (int) tests[i][1];
+            int actual = solver.v3(input.clone());
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass3++;
+            System.out.printf("Test %d: input=%s => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), expected, actual,
+                    (ok ? "PASS" : "FAIL"));
+        }
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass3, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("findMaxLength: %d/%d tests passed\n", pass1, tests.length);
         System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
+        System.out.printf("v3: %d/%d tests passed\n", pass3, tests.length);
     }
 }
