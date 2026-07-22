@@ -126,6 +126,32 @@ public class P_560_SubarraySumEqualsK {
         return total;
     }
 
+    /*
+    Same logic, but different way of writing the prefix sum.
+    */
+    public int v4(int[] nums, int k) {
+        int[] prefix = new int[nums.length];
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            prefix[i] = sum;
+        }
+
+        int count = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+
+        for (int p : prefix) {
+            int diff = p - k;
+            if (map.containsKey(diff)) {
+                count += map.get(diff);
+            }
+            map.put(p, map.getOrDefault(p, 0) + 1);
+        }
+
+        return count;
+    }
+
     public static void main(String[] args) {
         P_560_SubarraySumEqualsK solver = new P_560_SubarraySumEqualsK();
 
@@ -164,10 +190,65 @@ public class P_560_SubarraySumEqualsK {
                     (ok ? "PASS" : "FAIL"));
         }
 
-        System.out.printf("\nSummary: %d/%d tests passed.\n", pass, tests.length);
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_560_SubarraySumEqualsK.v2\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int k = (int) tests[i][1];
+            int expected = (int) tests[i][2];
+            int actual = solver.v2(input.clone(), k);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass2++;
+            System.out.printf("Test %d: input=%s, k=%d => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), k, expected, actual,
+                    (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_560_SubarraySumEqualsK.v3\n");
+        int pass3 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int k = (int) tests[i][1];
+            int expected = (int) tests[i][2];
+            int actual = solver.v3(input.clone(), k);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass3++;
+            System.out.printf("Test %d: input=%s, k=%d => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), k, expected, actual,
+                    (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_560_SubarraySumEqualsK.v4\n");
+        int pass4 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int k = (int) tests[i][1];
+            int expected = (int) tests[i][2];
+            int actual = solver.v4(input.clone(), k);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass4++;
+            System.out.printf("Test %d: input=%s, k=%d => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), k, expected, actual,
+                    (ok ? "PASS" : "FAIL"));
+        }
 
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("subarraySum: %d/%d tests passed\n", pass, tests.length);
+        System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
+        System.out.printf("v3: %d/%d tests passed\n", pass3, tests.length);
+        System.out.printf("v4: %d/%d tests passed\n", pass4, tests.length);
     }
 }
