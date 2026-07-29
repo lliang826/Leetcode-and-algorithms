@@ -69,6 +69,39 @@ public class P_1248_CountNumberOfNiceSubarrays {
         return niceCount;
     }
 
+    class Solution {
+        public int twoPointerApproach(int[] nums, int k) {
+            return exactly(k, nums);
+        }
+
+        private int exactly(int k, int[] nums) {
+            return atMost(k, nums) - atMost(k - 1, nums);
+        }
+
+        private int atMost(int k, int[] nums) {
+            int left = 0;
+            int oddCount = 0;
+            int nice = 0;
+
+            for (int right = 0; right < nums.length; right++) {
+                if (nums[right] % 2 == 1) {
+                    oddCount++;
+                }
+
+                while (oddCount > k) {
+                    if (nums[left] % 2 == 1) {
+                        oddCount--;
+                    }
+                    left++;
+                }
+
+                nice += right - left + 1;
+            }
+
+            return nice;
+        }
+    }
+
     public static void main(String[] args) {
         P_1248_CountNumberOfNiceSubarrays solver = new P_1248_CountNumberOfNiceSubarrays();
 
@@ -87,7 +120,21 @@ public class P_1248_CountNumberOfNiceSubarrays {
                 { new int[] { 1, 3, 5 }, 1, 3 },
                 { new int[] { 1, 3, 5 }, 2, 2 },
                 { new int[] { 1, 3, 5 }, 3, 1 },
-                { new int[] { 2, 4, 1, 6, 8, 3, 10 }, 2, 6 }
+                { new int[] { 2, 4, 1, 6, 8, 3, 10 }, 2, 6 },
+                // Single odd with an even on each side: 2 start choices x 2 end choices
+                { new int[] { 2, 1, 2 }, 1, 4 },
+                // Odd at the very end: only the start position can vary
+                { new int[] { 2, 2, 1 }, 1, 3 },
+                // Odd at the very start: only the end position can vary
+                { new int[] { 1, 2, 2 }, 1, 3 },
+                // Alternating odds and evens
+                { new int[] { 1, 2, 1, 2, 1 }, 2, 4 },
+                // Wide even gaps around each odd: 3x3 windows around each one
+                { new int[] { 2, 2, 1, 2, 2, 1, 2, 2 }, 1, 18 },
+                // Same array, but both odds must be included: 3x3
+                { new int[] { 2, 2, 1, 2, 2, 1, 2, 2 }, 2, 9 },
+                // k is larger than the total number of odds in the array
+                { new int[] { 1, 2, 3 }, 3, 0 }
         };
 
         System.out.println("Running tests for P_1248_CountNumberOfNiceSubarrays.numberOfSubarrays\n");
@@ -128,8 +175,29 @@ public class P_1248_CountNumberOfNiceSubarrays {
         System.out.printf("\nSummary: %d/%d tests passed.\n", pass2, tests.length);
 
         System.out.println("\n" + "=".repeat(50));
+        System.out.println("Running tests for P_1248_CountNumberOfNiceSubarrays.Solution.numberOfSubarrays\n");
+        int pass3 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int k = (int) tests[i][1];
+            int expected = (int) tests[i][2];
+            P_1248_CountNumberOfNiceSubarrays.Solution slidingWindow = solver.new Solution();
+            int actual = slidingWindow.twoPointerApproach(input.clone(), k);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass3++;
+            System.out.printf("Test %d: input=%s, k=%d => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), k, expected, actual,
+                    (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.printf("\nSummary: %d/%d tests passed.\n", pass3, tests.length);
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("numberOfSubarrays: %d/%d tests passed\n", pass1, tests.length);
         System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
+        System.out.printf("Solution.twoPointerApproach: %d/%d tests passed\n", pass3, tests.length);
     }
 }
