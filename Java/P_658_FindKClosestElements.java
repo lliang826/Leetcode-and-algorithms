@@ -34,4 +34,28 @@ public class P_658_FindKClosestElements {
         Collections.sort(res);
         return res;
     }
+
+    public List<Integer> v2(int[] arr, int k, int x) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> {
+            if (Math.abs(b - x) == Math.abs(a - x)) {
+                return b - a;
+            }
+            return Math.abs(b - x) - Math.abs(a - x);
+        });
+
+        for (int a : arr) {
+            heap.offer(a);
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < k; i++) {
+            res.add(heap.poll());
+        }
+
+        Collections.sort(res);
+        return res;
+    }
 }
