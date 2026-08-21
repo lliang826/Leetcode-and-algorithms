@@ -11,18 +11,15 @@ public class P_692_TopKFrequentWords {
             map.put(word, map.getOrDefault(word, 0) + 1);
         }
 
-        // Min-heap ordered "worst first": lowest count, then lexicographically largest.
         PriorityQueue<String> heap = new PriorityQueue<>((a, b) -> {
-            int countA = map.get(a);
-            int countB = map.get(b);
-            if (countA != countB) {
-                return countA - countB;
+            if (map.get(a).equals(map.get(b))) {
+                return b.compareTo(a);
             }
-            return b.compareTo(a);
+            return map.get(a) - map.get(b);
         });
 
-        for (String word : map.keySet()) {
-            heap.offer(word);
+        for (String s : map.keySet()) {
+            heap.offer(s);
             if (heap.size() > k) {
                 heap.poll();
             }
@@ -30,8 +27,9 @@ public class P_692_TopKFrequentWords {
 
         List<String> res = new ArrayList<>();
         for (int i = 0; i < k; i++) {
-            res.add(heap.poll());
+            res.addFirst(heap.poll());
         }
+
         return res;
     }
 }
