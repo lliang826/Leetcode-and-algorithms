@@ -65,4 +65,32 @@ public class P_295_FindMedianFromDataStream {
             }
         }
     }
+
+    class MedianFinder3 {
+        private PriorityQueue<Integer> maxHeap;
+        private PriorityQueue<Integer> minHeap;
+
+        public MedianFinder3() {
+            maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+            minHeap = new PriorityQueue<>();
+        }
+
+        public void addNum(int num) {
+            maxHeap.offer(num);
+            if (minHeap.peek() != null && maxHeap.peek() > minHeap.peek() || maxHeap.size() - minHeap.size() > 1) {
+                minHeap.offer(maxHeap.poll());
+            }
+            if (minHeap.peek() != null && minHeap.peek() < maxHeap.peek() || minHeap.size() - maxHeap.size() > 1) {
+                maxHeap.offer(minHeap.poll());
+            }
+        }
+
+        public double findMedian() {
+            if ((maxHeap.size() + minHeap.size()) % 2 == 0) {
+                return (double) (maxHeap.peek() + minHeap.peek()) / 2;
+            } else {
+                return maxHeap.size() > minHeap.size() ? maxHeap.peek() : minHeap.peek();
+            }
+        }
+    }
 }
