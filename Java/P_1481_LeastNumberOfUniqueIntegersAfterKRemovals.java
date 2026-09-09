@@ -48,6 +48,39 @@ public class P_1481_LeastNumberOfUniqueIntegersAfterKRemovals {
         return minHeap.size();
     }
 
+    /*
+    Instead of adding the last popped integer back into the minHeap if k becomes
+    negative like in the last solution (which can be a bit hacky), we can instead
+    peek into the minHeap to see if k will become negative. If it will, we can
+    break the while loop early.
+
+    Same time and space complexities.
+    */
+    public int v2(int[] arr, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int n : arr) {
+            map.put(n, map.getOrDefault(n, 0) + 1);
+        }
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>((a, b) -> {
+            return map.get(a) - map.get(b);
+        });
+
+        for (int i : map.keySet()) {
+            minHeap.offer(i);
+        }
+
+        while (k > 0) {
+            int key = minHeap.peek();
+            if (k - map.get(key) < 0) {
+                break;
+            }
+            k -= map.get(minHeap.poll());
+        }
+
+        return minHeap.size();
+    }
+
     public static void main(String[] args) {
         P_1481_LeastNumberOfUniqueIntegersAfterKRemovals solver = new P_1481_LeastNumberOfUniqueIntegersAfterKRemovals();
 
@@ -64,11 +97,13 @@ public class P_1481_LeastNumberOfUniqueIntegersAfterKRemovals {
                 { new int[] { 1, 1, 2, 2 }, 1, 2 },
                 { new int[] { 2, 1, 1, 3, 3, 3 }, 3, 1 },
                 { new int[] { 5, 5, 4 }, 3, 0 },
-                { new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5 }, 3, 3 }
+                { new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5 }, 3, 3 },
+                { new int[] { 1, 1, 2, 2, 2 }, 2, 1 },
+                { new int[] { 1, 1, 1, 2, 2, 2 }, 2, 2 }
         };
 
         System.out.println("Running tests for P_1481_LeastNumberOfUniqueIntegersAfterKRemovals.findLeastNumOfUniqueInts\n");
-        int pass = 0;
+        int pass1 = 0;
         for (int i = 0; i < tests.length; i++) {
             int[] arr = (int[]) tests[i][0];
             int k = (int) tests[i][1];
@@ -77,13 +112,31 @@ public class P_1481_LeastNumberOfUniqueIntegersAfterKRemovals {
 
             boolean ok = expected == actual;
             if (ok)
-                pass++;
+                pass1++;
+            System.out.printf("Test %d: arr=%s, k=%d => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(arr), k, expected, actual, (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_1481_LeastNumberOfUniqueIntegersAfterKRemovals.v2\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] arr = (int[]) tests[i][0];
+            int k = (int) tests[i][1];
+            int expected = (int) tests[i][2];
+            int actual = solver.v2(arr, k);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass2++;
             System.out.printf("Test %d: arr=%s, k=%d => expected=%d, actual=%d => %s\n",
                     i + 1, java.util.Arrays.toString(arr), k, expected, actual, (ok ? "PASS" : "FAIL"));
         }
 
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
-        System.out.printf("findLeastNumOfUniqueInts: %d/%d tests passed\n", pass, tests.length);
+        System.out.printf("findLeastNumOfUniqueInts: %d/%d tests passed\n", pass1, tests.length);
+        System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
     }
 }
