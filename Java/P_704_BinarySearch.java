@@ -8,6 +8,10 @@ public class P_704_BinarySearch {
         pointer to reach it
     - The condition left <= right ensures we check all possible positions
 
+    Examples:
+    - nums = [-1, 0, 3, 5, 9, 12], target = 9 -> 4
+    - nums = [-1, 0, 3, 5, 9, 12], target = 2 -> -1 (not found)
+
     Time complexity: O(log n) because we are halving the search space in each iteration
     Space complexity: O(1) because we are using pointers, no additional data structures
     */
@@ -34,6 +38,11 @@ public class P_704_BinarySearch {
 
     The left pointer is the insertion point because everything before left is less than the target
     and everything after left is greater.
+
+    Examples:
+    - nums = [1, 3, 5, 6], target = 5 -> 2 (found)
+    - nums = [1, 3, 5, 6], target = 2 -> 1 (insert between 1 and 3)
+    - nums = [1, 3, 5, 6], target = 7 -> 4 (insert past the end)
 
     Same time and space complexities as above.
     */
@@ -64,6 +73,11 @@ public class P_704_BinarySearch {
     right starts at nums.length so "past the end" is a possible answer, and the loop uses
     left < right because right = mid does not shrink the range when left == right.
 
+    Examples:
+    - nums = [1, 2, 2, 2, 3], target = 2 -> 1 (the first 2)
+    - nums = [1, 2, 2, 4], target = 3 -> 3 (insert before 4)
+    - nums = [1, 2, 3], target = 5 -> 3 (insert past the end)
+
     Time: O(log n)
     Space: O(1)
     */
@@ -89,6 +103,11 @@ public class P_704_BinarySearch {
     target would be inserted. When nums[mid] == target we move past mid (left = mid + 1) to keep
     searching right.
 
+    Examples:
+    - nums = [1, 2, 2, 2, 3], target = 2 -> 4 (just after the last 2)
+    - nums = [2, 2, 2, 2], target = 2 -> 4 (past the end)
+    - nums = [1, 2, 2, 4], target = 3 -> 3 (insert before 4)
+
     Time: O(log n)
     Space: O(1)
     */
@@ -113,6 +132,11 @@ public class P_704_BinarySearch {
     rightmost duplicate. Same search as duplicatesRightMostInsertionPoint; the answer is the index
     just before the insertion point. If target is missing, this is the last element smaller than
     target, or -1 if every element is larger.
+
+    Examples:
+    - nums = [1, 2, 2, 2, 3], target = 2 -> 3 (the last 2)
+    - nums = [1, 2, 2, 4], target = 3 -> 2 (last element smaller than 3)
+    - nums = [1, 2, 3], target = 0 -> -1 (every element is larger)
 
     Time: O(log n)
     Space: O(1)
