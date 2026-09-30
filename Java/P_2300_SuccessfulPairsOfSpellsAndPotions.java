@@ -38,14 +38,14 @@ public class P_2300_SuccessfulPairsOfSpellsAndPotions {
 
             for (int i = 0; i < n; i++) {
                 double threshold = (double) success / (double) spells[i];
-                int index = binarySearch(potions, threshold);
+                int index = binarySearchLeftMostInsertionPoint(potions, threshold);
                 res[i] = m - index;
             }
 
             return res;
         }
 
-        private int binarySearch(int[] potions, double target) {
+        private int binarySearchLeftMostInsertionPoint(int[] potions, double target) {
             int left = 0;
             int right = potions.length;
 
