@@ -32,6 +32,9 @@ public class P_704_BinarySearch {
     We can also return the left pointer, which will be at the index where the target integer would
     need to be inserted to to maintain the array nums being sorted (if target doesn't exist).
 
+    The left pointer is the insertion point because everything before left is less than the target
+    and everything after left is greater.
+
     Same time and space complexities as above.
     */
     public int binarySearch(int[] nums, int target) {
