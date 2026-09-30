@@ -1,6 +1,28 @@
 import java.util.Arrays;
 
 public class P_2389_LongestSubsequenceWithLimitedSum {
+    /*
+    Greedy + prefix sum + binary search.
+
+    A tricky problem because it combines 3 different topics. The first step is to recognize the
+    greedy approach: since we want the maximum size of the subsequence, we should sort nums in
+    ascending order and take the smallest elements first.
+
+    The next step is the trickiest; instead of iterating through nums for every element in 
+    queries to find the sum, we can use prefix sum. Then, binary search allows us to find the
+    cutoff for the number of elements in nums whose sum is less than or equal to queries[i]; the
+    cutoff index is the maximum size. Binary search only works because nums and prefix are sorted.
+
+    Time: O(n log n) + O(m log n) => O((n + m) log n)
+    - O(n log n) to sort nums
+    - O(n) to build the prefix sum
+    - O(m log n) to perform binary search for each element in queries
+
+    Space: O(n) + O(m) => O(n + m)
+    - O(1) to sort nums in place
+    - O(n) to hold the prefix sum
+    - O(m) to hold the results array
+    */
     public int[] answerQueries(int[] nums, int[] queries) {
         int n = nums.length;
         int m = queries.length;
