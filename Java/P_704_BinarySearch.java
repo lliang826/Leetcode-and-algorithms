@@ -70,9 +70,6 @@ public class P_704_BinarySearch {
     otherwise it is where target would be inserted. When the target is found, keep going left.
     The answer is the first copy of it.
 
-    right starts at nums.length so "past the end" is a possible answer, and the loop uses
-    left < right because right = mid does not shrink the range when left == right.
-
     Examples:
     - nums = [1, 2, 2, 2, 3], target = 2 -> 1 (the first 2)
     - nums = [1, 2, 2, 4], target = 3 -> 3 (insert before 4)
@@ -83,12 +80,12 @@ public class P_704_BinarySearch {
     */
     public int duplicatesLeftMostInsertionPoint(int[] nums, int target) {
         int left = 0;
-        int right = nums.length;
+        int right = nums.length - 1;
 
-        while (left < right) {
+        while (left <= right) {
             int mid = (right - left) / 2 + left;
             if (target <= nums[mid]) {
-                right = mid;
+                right = mid - 1;
             } else {
                 left = mid + 1;
             }
@@ -113,48 +110,18 @@ public class P_704_BinarySearch {
     */
     public int duplicatesRightMostInsertionPoint(int[] nums, int target) {
         int left = 0;
-        int right = nums.length;
+        int right = nums.length - 1;
 
-        while (left < right) {
+        while (left <= right) {
             int mid = (right - left) / 2 + left;
             if (target < nums[mid]) {
-                right = mid;
+                right = mid - 1;
             } else {
                 left = mid + 1;
             }
         }
 
         return left;
-    }
-
-    /*
-    Rightmost index: the last index where nums[i] <= target. If target exists, this is its
-    rightmost duplicate. Same search as duplicatesRightMostInsertionPoint; the answer is the index
-    just before the insertion point. If target is missing, this is the last element smaller than
-    target, or -1 if every element is larger.
-
-    Examples:
-    - nums = [1, 2, 2, 2, 3], target = 2 -> 3 (the last 2)
-    - nums = [1, 2, 2, 4], target = 3 -> 2 (last element smaller than 3)
-    - nums = [1, 2, 3], target = 0 -> -1 (every element is larger)
-
-    Time: O(log n)
-    Space: O(1)
-    */
-    public int duplicatesRightMostIndex(int[] nums, int target) {
-        int left = 0;
-        int right = nums.length;
-
-        while (left < right) {
-            int mid = (right - left) / 2 + left;
-            if (target < nums[mid]) {
-                right = mid;
-            } else {
-                left = mid + 1;
-            }
-        }
-
-        return left - 1;
     }
 
     public static void main(String[] args) {
@@ -227,24 +194,24 @@ public class P_704_BinarySearch {
                     i + 1, java.util.Arrays.toString(nums), target, expected, actual, (ok ? "PASS" : "FAIL"));
         }
 
-        // Test cases: {nums, target, expectedLeftMost, expectedRightMostInsertionPoint, expectedRightMostIndex}
+        // Test cases: {nums, target, expectedLeftMostInsertionPoint, expectedRightMostInsertionPoint}
         Object[][] dupTests = new Object[][] {
-                { new int[] { 1, 2, 2, 2, 3 }, 2, 1, 4, 3 },
-                { new int[] { 2, 2, 2, 2 }, 2, 0, 4, 3 },
-                { new int[] { 1, 1, 2, 3 }, 1, 0, 2, 1 },
-                { new int[] { 1, 2, 3, 3 }, 3, 2, 4, 3 },
-                { new int[] { -3, -3, 0, 0, 0, 7 }, 0, 2, 5, 4 },
-                { new int[] { 1, 3, 5, 7 }, 5, 2, 3, 2 },
-                { new int[] { 5 }, 5, 0, 1, 0 },
-                { new int[] { 5 }, 4, 0, 0, -1 },
-                { new int[] { 1, 2, 2, 4 }, 3, 3, 3, 2 },
-                { new int[] { 1, 2, 3 }, 0, 0, 0, -1 },
-                { new int[] { 1, 2, 3 }, 5, 3, 3, 2 },
-                { new int[] {}, 1, 0, 0, -1 }
+                { new int[] { 1, 2, 2, 2, 3 }, 2, 1, 4 },
+                { new int[] { 2, 2, 2, 2 }, 2, 0, 4 },
+                { new int[] { 1, 1, 2, 3 }, 1, 0, 2 },
+                { new int[] { 1, 2, 3, 3 }, 3, 2, 4 },
+                { new int[] { -3, -3, 0, 0, 0, 7 }, 0, 2, 5 },
+                { new int[] { 1, 3, 5, 7 }, 5, 2, 3 },
+                { new int[] { 5 }, 5, 0, 1 },
+                { new int[] { 5 }, 4, 0, 0 },
+                { new int[] { 1, 2, 2, 4 }, 3, 3, 3 },
+                { new int[] { 1, 2, 3 }, 0, 0, 0 },
+                { new int[] { 1, 2, 3 }, 5, 3, 3 },
+                { new int[] {}, 1, 0, 0 }
         };
 
         System.out.println("\n" + "=".repeat(50));
-        System.out.println("\nRunning tests for P_704_BinarySearch.duplicatesLeftMostIndex\n");
+        System.out.println("\nRunning tests for P_704_BinarySearch.duplicatesLeftMostInsertionPoint\n");
         int passLeft = 0;
         for (int i = 0; i < dupTests.length; i++) {
             int[] nums = (int[]) dupTests[i][0];
@@ -274,26 +241,10 @@ public class P_704_BinarySearch {
         }
 
         System.out.println("\n" + "=".repeat(50));
-        System.out.println("\nRunning tests for P_704_BinarySearch.duplicatesRightMostIndex\n");
-        int passRightIndex = 0;
-        for (int i = 0; i < dupTests.length; i++) {
-            int[] nums = (int[]) dupTests[i][0];
-            int target = (int) dupTests[i][1];
-            int expected = (int) dupTests[i][4];
-            int actual = solver.duplicatesRightMostIndex(nums, target);
-            boolean ok = (expected == actual);
-            if (ok)
-                passRightIndex++;
-            System.out.printf("Test %d: nums=%s, target=%d => expected=%d, actual=%d => %s\n",
-                    i + 1, java.util.Arrays.toString(nums), target, expected, actual, (ok ? "PASS" : "FAIL"));
-        }
-
-        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("search: %d/%d tests passed\n", pass, tests.length);
         System.out.printf("binarySearch: %d/%d tests passed\n", passInsert, insertTests.length);
-        System.out.printf("duplicatesLeftMostIndex: %d/%d tests passed\n", passLeft, dupTests.length);
+        System.out.printf("duplicatesLeftMostInsertionPoint: %d/%d tests passed\n", passLeft, dupTests.length);
         System.out.printf("duplicatesRightMostInsertionPoint: %d/%d tests passed\n", passRight, dupTests.length);
-        System.out.printf("duplicatesRightMostIndex: %d/%d tests passed\n", passRightIndex, dupTests.length);
     }
 }
