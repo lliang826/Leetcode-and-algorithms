@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public class P_997_FindTheTownJudge {
+    /*
+    Initial DFS approach.
+    */
     class Solution {
         private Map<Integer, List<Integer>> in = new HashMap<>();
         private Map<Integer, List<Integer>> out = new HashMap<>();
@@ -51,6 +54,34 @@ public class P_997_FindTheTownJudge {
         }
     }
 
+    /*
+    More efficient approach: count the in and out degrees for each node.
+
+    Same time complexity as the original solution, but more efficient because there's no
+    DFS involved.
+
+    Space: O(n) for the trustScore integer array
+    */
+    class Solution2 {
+        public int findJudge(int n, int[][] trust) {
+            int[] trustScore = new int[n + 1];
+
+            for (int[] pair : trust) {
+                int truster = pair[0];
+                int trusted = pair[1];
+                trustScore[truster]--;
+                trustScore[trusted]++;
+            }
+
+            for (int person = 1; person <= n; person++) {
+                if (trustScore[person] == n - 1) {
+                    return person;
+                }
+            }
+            return -1;
+        }
+    }
+
     public static void main(String[] args) {
         P_997_FindTheTownJudge outer = new P_997_FindTheTownJudge();
 
@@ -80,7 +111,7 @@ public class P_997_FindTheTownJudge {
                         "Judge is the last person (n)" }
         };
 
-        System.out.println("Running tests for P_997_FindTheTownJudge.findJudge\n");
+        System.out.println("Running tests for P_997_FindTheTownJudge.Solution.findJudge (DFS)\n");
         int pass = 0;
         for (int i = 0; i < tests.length; i++) {
             int n = (int) tests[i][0];
@@ -101,7 +132,29 @@ public class P_997_FindTheTownJudge {
         }
 
         System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_997_FindTheTownJudge.Solution2.findJudge (trust score)\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int n = (int) tests[i][0];
+            int[][] trust = (int[][]) tests[i][1];
+            int expected = (int) tests[i][2];
+            String desc = (String) tests[i][3];
+
+            P_997_FindTheTownJudge.Solution2 solver = outer.new Solution2();
+            int actual = solver.findJudge(n, trust);
+
+            boolean ok = actual == expected;
+            if (ok)
+                pass2++;
+            System.out.printf("Test %d (%s): n=%d, trust=%s => expected=%d, actual=%d => %s%n",
+                    i + 1, desc, n, java.util.Arrays.deepToString(trust), expected, actual,
+                    ok ? "PASS" : "FAIL");
+        }
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:%n");
-        System.out.printf("findJudge: %d/%d tests passed%n", pass, tests.length);
+        System.out.printf("Solution.findJudge (DFS): %d/%d tests passed%n", pass, tests.length);
+        System.out.printf("Solution2.findJudge (trust score): %d/%d tests passed%n", pass2, tests.length);
     }
 }
