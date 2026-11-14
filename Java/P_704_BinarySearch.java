@@ -114,10 +114,10 @@ public class P_704_BinarySearch {
 
         while (left <= right) {
             int mid = (right - left) / 2 + left;
-            if (target < nums[mid]) {
-                right = mid - 1;
-            } else {
+            if (target >= nums[mid]) {
                 left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
 
