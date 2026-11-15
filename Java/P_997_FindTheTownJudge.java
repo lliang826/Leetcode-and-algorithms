@@ -85,23 +85,21 @@ public class P_997_FindTheTownJudge {
     */
     public int findJudge3(int n, int[][] trust) {
         // {indegree, outdegree}
-        Map<Integer, Integer[]> map = new HashMap<>();
+        Map<Integer, int[]> map = new HashMap<>();
         for (int i = 1; i <= n; i++) {
-            map.put(i, new Integer[]{0, 0});
+            map.put(i, new int[] { 0, 0 });
         }
 
         for (int[] t : trust) {
             int out = t[0];
-            Integer[] newOut = map.get(out);
-            map.put(out, new Integer[]{newOut[0], newOut[1] + 1});
+            map.get(out)[1]++;
 
             int in = t[1];
-            Integer[] newIn = map.get(in);
-            map.put(in, new Integer[]{newIn[0] + 1, newIn[1]});
+            map.get(in)[0]++;
         }
 
-        for (Map.Entry<Integer, Integer[]> entry : map.entrySet()) {
-            Integer[] value = entry.getValue();
+        for (Map.Entry<Integer, int[]> entry : map.entrySet()) {
+            int[] value = entry.getValue();
             if (value[0] == n - 1 && value[1] == 0) {
                 return entry.getKey();
             }
