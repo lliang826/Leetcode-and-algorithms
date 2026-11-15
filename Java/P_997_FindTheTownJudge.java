@@ -62,24 +62,52 @@ public class P_997_FindTheTownJudge {
 
     Space: O(n) for the trustScore integer array
     */
-    class Solution2 {
-        public int findJudge(int n, int[][] trust) {
-            int[] trustScore = new int[n + 1];
+    public int findJudge2(int n, int[][] trust) {
+        int[] trustScore = new int[n + 1];
 
-            for (int[] pair : trust) {
-                int truster = pair[0];
-                int trusted = pair[1];
-                trustScore[truster]--;
-                trustScore[trusted]++;
-            }
-
-            for (int person = 1; person <= n; person++) {
-                if (trustScore[person] == n - 1) {
-                    return person;
-                }
-            }
-            return -1;
+        for (int[] pair : trust) {
+            int truster = pair[0];
+            int trusted = pair[1];
+            trustScore[truster]--;
+            trustScore[trusted]++;
         }
+
+        for (int person = 1; person <= n; person++) {
+            if (trustScore[person] == n - 1) {
+                return person;
+            }
+        }
+        return -1;
+    }
+
+    /*
+    Counting indegrees and outdegrees, another solution.
+    */
+    public int findJudge3(int n, int[][] trust) {
+        // {indegree, outdegree}
+        Map<Integer, Integer[]> map = new HashMap<>();
+        for (int i = 1; i <= n; i++) {
+            map.put(i, new Integer[]{0, 0});
+        }
+
+        for (int[] t : trust) {
+            int out = t[0];
+            Integer[] newOut = map.get(out);
+            map.put(out, new Integer[]{newOut[0], newOut[1] + 1});
+
+            int in = t[1];
+            Integer[] newIn = map.get(in);
+            map.put(in, new Integer[]{newIn[0] + 1, newIn[1]});
+        }
+
+        for (Map.Entry<Integer, Integer[]> entry : map.entrySet()) {
+            Integer[] value = entry.getValue();
+            if (value[0] == n - 1 && value[1] == 0) {
+                return entry.getKey();
+            }
+        }
+
+        return -1;
     }
 
     public static void main(String[] args) {
@@ -108,7 +136,17 @@ public class P_997_FindTheTownJudge {
                 { 4, new int[][] { { 1, 3 }, { 1, 4 }, { 2, 3 }, { 2, 4 }, { 4, 3 } }, 3,
                         "LC-style: extra trust edges, judge still 3" },
                 { 4, new int[][] { { 1, 2 }, { 1, 4 }, { 3, 4 }, { 2, 4 }, { 1, 3 } }, 4,
-                        "Judge is the last person (n)" }
+                        "Judge is the last person (n)" },
+                { 3, new int[][] { { 2, 1 }, { 3, 1 } }, 1,
+                        "Judge is the first person (1)" },
+                { 3, new int[][] { { 1, 3 }, { 2, 3 }, { 3, 2 } }, -1,
+                        "Trusted by all but trusts one person (score n-2, not n-1)" },
+                { 3, new int[][] { { 1, 2 }, { 2, 3 }, { 3, 1 } }, -1,
+                        "Everyone trusts exactly one person: no sink at all" },
+                { 200, everyoneTrusts(200, 200, -1), 200,
+                        "Large n: in-degree 199 > 127 (Integer cache boundary)" },
+                { 200, everyoneTrusts(200, 150, 199), -1,
+                        "Large n: one person (199) doesn't trust candidate 150" }
         };
 
         System.out.println("Running tests for P_997_FindTheTownJudge.Solution.findJudge (DFS)\n");
@@ -127,13 +165,13 @@ public class P_997_FindTheTownJudge {
             if (ok)
                 pass++;
             System.out.printf("Test %d (%s): n=%d, trust=%s => expected=%d, actual=%d => %s%n",
-                    i + 1, desc, n, java.util.Arrays.deepToString(trust), expected, actual,
+                    i + 1, desc, n, formatTrust(trust), expected, actual,
                     ok ? "PASS" : "FAIL");
         }
 
         System.out.println("\n" + "=".repeat(50));
 
-        System.out.println("\nRunning tests for P_997_FindTheTownJudge.Solution2.findJudge (trust score)\n");
+        System.out.println("\nRunning tests for P_997_FindTheTownJudge.findJudge2 (trust score)\n");
         int pass2 = 0;
         for (int i = 0; i < tests.length; i++) {
             int n = (int) tests[i][0];
@@ -141,20 +179,59 @@ public class P_997_FindTheTownJudge {
             int expected = (int) tests[i][2];
             String desc = (String) tests[i][3];
 
-            P_997_FindTheTownJudge.Solution2 solver = outer.new Solution2();
-            int actual = solver.findJudge(n, trust);
+            int actual = outer.findJudge2(n, trust);
 
             boolean ok = actual == expected;
             if (ok)
                 pass2++;
             System.out.printf("Test %d (%s): n=%d, trust=%s => expected=%d, actual=%d => %s%n",
-                    i + 1, desc, n, java.util.Arrays.deepToString(trust), expected, actual,
+                    i + 1, desc, n, formatTrust(trust), expected, actual,
+                    ok ? "PASS" : "FAIL");
+        }
+
+        System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_997_FindTheTownJudge.findJudge3 (in/out degree map)\n");
+        int pass3 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int n = (int) tests[i][0];
+            int[][] trust = (int[][]) tests[i][1];
+            int expected = (int) tests[i][2];
+            String desc = (String) tests[i][3];
+
+            int actual = outer.findJudge3(n, trust);
+
+            boolean ok = actual == expected;
+            if (ok)
+                pass3++;
+            System.out.printf("Test %d (%s): n=%d, trust=%s => expected=%d, actual=%d => %s%n",
+                    i + 1, desc, n, formatTrust(trust), expected, actual,
                     ok ? "PASS" : "FAIL");
         }
 
         System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:%n");
         System.out.printf("Solution.findJudge (DFS): %d/%d tests passed%n", pass, tests.length);
-        System.out.printf("Solution2.findJudge (trust score): %d/%d tests passed%n", pass2, tests.length);
+        System.out.printf("findJudge2 (trust score): %d/%d tests passed%n", pass2, tests.length);
+        System.out.printf("findJudge3 (in/out degree map): %d/%d tests passed%n", pass3, tests.length);
+    }
+
+    // Builds trust pairs where every person except the judge (and except skip, if skip != -1) trusts the judge.
+    private static int[][] everyoneTrusts(int n, int judge, int skip) {
+        List<int[]> pairs = new ArrayList<>();
+        for (int person = 1; person <= n; person++) {
+            if (person != judge && person != skip) {
+                pairs.add(new int[] { person, judge });
+            }
+        }
+        return pairs.toArray(new int[0][]);
+    }
+
+    // Keeps output readable for the large generated test cases.
+    private static String formatTrust(int[][] trust) {
+        if (trust.length > 10) {
+            return "[" + trust.length + " pairs]";
+        }
+        return java.util.Arrays.deepToString(trust);
     }
 }
