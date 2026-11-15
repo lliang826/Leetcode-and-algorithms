@@ -3,6 +3,56 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class P_146_LRUCache {
+    /*
+    LRU Cache: evicting the least recently used key when capacity is reached
+
+    To implement both the get() and put() methods in O(1) constant time, we need
+    both a hashmap and a linked list. For the get() method, the hashmap allows 
+    O(1) constant time lookup. For put(), we need a data structure that allows us
+    to evict the least recently used key, and there are many different ways to do
+    this:
+    - each key:value pair in the hashmap can also include a timestamp, but iterating
+    through each key:value pair to find the LRU key would be O(n) time
+    - we could use a Queue data structure, where new and recently used keys are 
+    always inserted at the end of the queue, and the LRU can be found at the front, 
+    but we can't access keys in the middle of the queue for scenarios where a used
+    key gets used again (if a key in the cache is used again, it needs to move to
+    the end of the queue)
+    - an array (or ArrayList) could solve the Queue's problem; with an array, we 
+    can access keys in the middle. But moving a key from the middle to the end
+    requires us to shift the rest of the elements, which would be O(n) time
+    - a LinkedList is the best fit for this problem. By having head and tail dummy
+    nodes, we can easily add new and recently used keys at the head, and we can 
+    evict the LRU key from the tail. We can also access keys in the middle by having
+    the hashmap point to each node; moving a node from the middle to the head of 
+    the list only requires reassigning pointers, no shifting involved
+
+    But even though the concept of using a hashmap with a linked list is easy,
+    there are a lot of things that can go wrong in this problem, which makes it
+    tricky to implement. 
+
+    Some things to note: 
+    - must use a doubly linked list: when we move a node in the middle to the head,
+    we need to set the previous node's next pointer to the next node. Without the
+    prev pointer in a doubly linked list, we have to iterate through the entire list
+    to find prev, which is O(n)
+    - having the head and tail dummy nodes means we don't have to check for null, 
+    which makes things easier and cleaner
+    - when first thinking about this problem, it's easy to conceptualize that the 
+    hashmap holds the keys, and the linked list holds the values; each hashmap key
+    points to a linked list node. But actually, each linked list node must hold the
+    key value too: when we evict the LRU from the linked list's tail, we have the
+    value, but we also need to remove the entry from the hashmap; where do we get 
+    the key? So each node holds both the key and the value
+
+    Time:
+    - O(1) for get()
+    - O(1) for put()
+
+    Space: O(capacity)
+    - O(capacity) for the hashmap
+    - O(capacity) for the linked list
+    */
     class LRUCache {
         class Node {
             int key;
