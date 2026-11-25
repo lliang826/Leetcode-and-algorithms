@@ -27,6 +27,27 @@ public class P_930_BinarySubarraysWithSum {
         return count;
     }
 
+    /*
+    */
+    public int v2(int[] nums, int goal) {
+        int sum = 0;
+        int count = 0;
+
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            int complement = sum - goal;
+            if (map.containsKey(complement)) {
+                count += map.get(complement);
+            }
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+
+        return count;
+    }
+
     public static void main(String[] args) {
         P_930_BinarySubarraysWithSum solver = new P_930_BinarySubarraysWithSum();
 
@@ -66,7 +87,26 @@ public class P_930_BinarySubarraysWithSum {
         }
 
         System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_930_BinarySubarraysWithSum.v2\n");
+        int pass2 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] input = (int[]) tests[i][0];
+            int goal = (int) tests[i][1];
+            int expected = (int) tests[i][2];
+            int actual = solver.v2(input.clone(), goal);
+
+            boolean ok = expected == actual;
+            if (ok)
+                pass2++;
+            System.out.printf("Test %d: nums=%s, goal=%d => expected=%d, actual=%d => %s\n",
+                    i + 1, java.util.Arrays.toString(input), goal, expected, actual,
+                    (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("numSubarraysWithSum: %d/%d tests passed\n", pass, tests.length);
+        System.out.printf("v2: %d/%d tests passed\n", pass2, tests.length);
     }
 }
