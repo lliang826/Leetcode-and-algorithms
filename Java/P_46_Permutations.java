@@ -32,6 +32,31 @@ public class P_46_Permutations {
     }
 
     class Solution2 {
+        public List<List<Integer>> permute(int[] nums) {
+            List<List<Integer>> res = new ArrayList<>();
+            backtrack(new ArrayList<>(), res, nums, new HashSet<>());
+            return res;
+        }
+
+        private void backtrack(List<Integer> curr, List<List<Integer>> res, int[] nums, Set<Integer> set) {
+            if (curr.size() == nums.length) {
+                res.add(new ArrayList<>(curr));
+                return;
+            }
+
+            for (int i = 0; i < nums.length; i++) {
+                if (!set.contains(nums[i])) {
+                    curr.add(nums[i]);
+                    set.add(nums[i]);
+                    backtrack(curr, res, nums, set);
+                    curr.remove(curr.size() - 1);
+                    set.remove(nums[i]);
+                }
+            }
+        }
+    }
+
+    class Solution3 {
         List<List<Integer>> res = new ArrayList<>();
         int[] nums;
 
@@ -59,7 +84,7 @@ public class P_46_Permutations {
         }
     }
 
-    class Solution3 {
+    class Solution4 {
         List<List<Integer>> res = new ArrayList<>();
         int[] nums;
 
@@ -194,9 +219,28 @@ public class P_46_Permutations {
         }
 
         System.out.println("\n" + "=".repeat(50));
+
+        System.out.println("\nRunning tests for P_46_Permutations.Solution4.permute\n");
+        int pass4 = 0;
+        for (int i = 0; i < tests.length; i++) {
+            int[] nums = tests[i];
+            Solution4 solver = outer.new Solution4();
+            List<List<Integer>> actual = solver.permute(nums);
+
+            boolean ok = isValid(nums, actual);
+            if (ok)
+                pass4++;
+            String output = nums.length <= 3 ? ", output=" + actual : "";
+            System.out.printf("Test %d: nums=%s => expected count=%d, actual count=%d%s => %s\n",
+                    i + 1, Arrays.toString(nums), factorial(nums.length), actual.size(), output,
+                    (ok ? "PASS" : "FAIL"));
+        }
+
+        System.out.println("\n" + "=".repeat(50));
         System.out.printf("Overall Summary:\n");
         System.out.printf("Solution.permute: %d/%d tests passed\n", pass1, tests.length);
         System.out.printf("Solution2.permute: %d/%d tests passed\n", pass2, tests.length);
         System.out.printf("Solution3.permute: %d/%d tests passed\n", pass3, tests.length);
+        System.out.printf("Solution4.permute: %d/%d tests passed\n", pass4, tests.length);
     }
 }
